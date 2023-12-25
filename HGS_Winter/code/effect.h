@@ -73,6 +73,7 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	INFO m_Info;	// 情報の構造体
+	bool m_bHit;	// 当たったかどうか
 	CObjectBillboard *m_pObjectBilBoard;
 };
 

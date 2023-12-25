@@ -37,31 +37,41 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3& pos);
 	void SetRotation(const D3DXVECTOR3& rot);
+	void SetMaterial(const D3DMATERIAL9& Material) { m_ChangeMat = Material; }
+	void ChangeCol(bool bValue = false) { m_bChangeCol = bValue; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) const { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) const { return m_rot; }
+	D3DMATERIAL9 GetMaterial(void) const { return m_ChangeMat; }
 	CObject2D *GetObject2D(void) { return NULL; }
 	virtual D3DXMATRIX *GetMtx(void) { return &m_mtxWorld; }
 	int GetIdx(void) { return m_nIdxModel; }
 	void ListOut(void);
 	int GetModelType(void) { return m_nIdxModel; }
 
+protected:
+
+	// メンバ関数
+	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
+
 private:	// 自分だけがアクセス可能
 	
 	// メンバ関数
-	//D3DMATERIAL9 SetSlowCol(D3DMATERIAL9 *pMat);
-	bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
+	
 
 	// メンバ変数c
 	static CObjectX *m_pTop;	// 先頭のオブジェクトへのポインタ
 	static CObjectX *m_pCur;	// 最後尾のオブジェクトへのポインタ
-	CObjectX *m_pPrev;	// 前のオブジェクトへのポインタ
-	CObjectX *m_pNext;	// 次のオブジェクトへのポインタ
-	D3DXVECTOR3 m_pos;	// 位置
-	D3DXVECTOR3 m_rot;	// 向き
-	D3DXMATRIX m_mtxWorld;	//ワールドマトリックス
-	int m_nIdxModel;		// モデル番号
+
+	bool m_bChangeCol;		// 色変更をするかどうか
+	D3DMATERIAL9 m_ChangeMat;	// 変更後の色
+	CObjectX *m_pPrev;		// 前のオブジェクトへのポインタ
+	CObjectX *m_pNext;		// 次のオブジェクトへのポインタ
+	D3DXVECTOR3 m_pos;		// 位置
+	D3DXVECTOR3 m_rot;		// 向き
+	D3DXMATRIX m_mtxWorld;		//ワールドマトリックス
+	int m_nIdxModel;			// モデル番号
 };
 
 #endif

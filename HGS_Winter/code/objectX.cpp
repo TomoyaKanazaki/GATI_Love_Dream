@@ -29,6 +29,10 @@ CObjectX::CObjectX(int nPriority) : CObject(nPriority)
 
 	m_pNext = NULL;
 	m_pPrev = NULL;
+	m_ChangeMat.Ambient = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	m_ChangeMat.Diffuse = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	m_ChangeMat.Emissive = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	m_bChangeCol = false;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -127,10 +131,17 @@ void CObjectX::Draw(void)
 		pMat = (D3DXMATERIAL*)pFileData->pBuffMat->GetBufferPointer();
 		for (int nCntMat = 0; nCntMat < (int)pFileData->dwNumMat; nCntMat++)
 		{
-			D3DMATERIAL9 mat = pMat[nCntMat].MatD3D;
-
-			//マテリアルの設定
-			pDevice->SetMaterial(&mat);
+			if (m_bChangeCol == false)
+			{
+				// マテリアルの設定
+				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+			}
+			else
+			{
+				m_ChangeMat.Power = pMat[nCntMat].MatD3D.Power;
+				m_ChangeMat.Specular = pMat[nCntMat].MatD3D.Specular;
+				pDevice->SetMaterial(&m_ChangeMat);
+			}
 
 			//テクスチャの設定
 			pDevice->SetTexture(0, pTexture->SetAddress(pFileData->pIdexTexture[nCntMat]));
@@ -176,6 +187,12 @@ CObjectX *CObjectX::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const
 
 		// 読み込み確認
 		pObjectX->BindFile(pModelFile->Regist(pFileName));
+
+
+		D3DXMATERIAL *pMat;	//マテリアルデータへのポインタ
+		CXFile::FileData *pFileData = pModelFile->SetAddress(pObjectX->m_nIdxModel);
+		pMat = (D3DXMATERIAL*)pFileData->pBuffMat->GetBufferPointer();
+		pObjectX->m_ChangeMat = pMat->MatD3D;
 	}
 	else
 	{// 生成に失敗した場合

@@ -15,7 +15,7 @@
 #include "ranking.h"
 #include "sound.h"
 #include "result.h"
-#include "time.h"
+#include "timer.h"
 #include "fileload.h"
 #include "meshdome.h"
 #include "character.h"

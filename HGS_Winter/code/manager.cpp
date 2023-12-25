@@ -22,6 +22,7 @@
 #include "ranking.h"
 #include "slow.h"
 #include "task_manager.h"
+#include "score.h"
 
 //===============================================
 // 静的メンバ変数
@@ -31,7 +32,7 @@ CManager *CManager::m_pManager = NULL;
 //===================================================
 // コンストラクタ
 //===================================================
-CManager::CManager()
+CManager::CManager() : m_pScore(nullptr)
 {
 	m_pRenderer = NULL;			// レンダラーのポインタ
 	m_pInputKeyboard = NULL;	// 入力デバイス(キーボード)へのポインタ
@@ -206,6 +207,11 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		m_pSlow->Init();
 	}
 
+	// スコアの生成
+	if (m_pScore == nullptr)
+	{
+		m_pScore = CScore::Create();
+	}
 
 	// モードの生成
 	SetMode(CScene::MODE_GAME);
@@ -316,6 +322,13 @@ void CManager::Uninit(void)
 
 		m_pModelFile = NULL;	// 使用していない状態にする
 	}
+
+	// スコアの終了
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Uninit();
+		m_pScore = nullptr;
+	}
 }
 
 //===================================================
@@ -350,6 +363,12 @@ void CManager::Update(void)
 	if (m_pScene != NULL)
 	{
 		m_pScene->Update();
+	}
+
+	// スコアの終了
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Update();
 	}
 }
 

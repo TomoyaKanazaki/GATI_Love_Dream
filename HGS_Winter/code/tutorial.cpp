@@ -8,7 +8,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "sound.h"
-#include "time.h"
+#include "timer.h"
 #include "camera.h"
 #include "light.h"
 #include "texture.h"

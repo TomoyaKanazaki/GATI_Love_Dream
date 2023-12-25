@@ -4,7 +4,7 @@
 // Author : Ibuki Okusada
 //
 //===============================================
-#include "time.h"
+#include "timer.h"
 #include "manager.h"
 #include "renderer.h"
 #include "texture.h"

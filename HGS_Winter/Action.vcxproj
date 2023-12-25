@@ -96,6 +96,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderFile>precompile.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>precompile.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -207,11 +208,12 @@
     <ClCompile Include="code\task_manager.cpp" />
     <ClCompile Include="code\tcp_client.cpp" />
     <ClCompile Include="code\texture.cpp" />
-    <ClCompile Include="code\time.cpp" />
+    <ClCompile Include="code\timer.cpp" />
     <ClCompile Include="code\title.cpp" />
     <ClCompile Include="code\tutorial.cpp" />
     <ClCompile Include="code\Xfile.cpp" />
     <ClCompile Include="code\gimmick.cpp" />
+    <ClCompile Include="score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\billboard.h" />
@@ -263,13 +265,14 @@
     <ClInclude Include="code\task_manager.h" />
     <ClInclude Include="code\tcp_client.h" />
     <ClInclude Include="code\texture.h" />
-    <ClInclude Include="code\time.h" />
+    <ClInclude Include="code\timer.h" />
     <ClInclude Include="code\title.h" />
     <ClInclude Include="code\tutorial.h" />
     <ClInclude Include="code\Xfile.h" />
     <ClInclude Include="code\gimmick.h" />
     <ClInclude Include="code\gimmick_air.h" />
     <ClInclude Include="mesh_water.h" />
+    <ClInclude Include="score.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

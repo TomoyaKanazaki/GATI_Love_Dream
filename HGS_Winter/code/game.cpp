@@ -25,7 +25,7 @@
 #include "gimmick_move.h"
 #include "gimmick_rotate.h"
 #include "gimmick_fish.h"
-#include "time.h"
+#include "timer.h"
 #include "meshdome.h"
 #include "gimmick_button.h"
 #include "gimmick_air.h"
@@ -116,12 +116,6 @@ HRESULT CGame::Init(void)
 			m_pFileLoad->OpenFile("data\\TXT\\model.txt");
 		}
 	}
-
-	// ƒ}ƒbƒv‚Ì¶¬
-	//CObject2D *pObj = CObject2D::Create();
-	//pObj->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\map.png"));
-	//pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.95f, 0.0f));
-	//pObj->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.05f);
 
 	//m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	//m_pPlayer->SetUp(true);

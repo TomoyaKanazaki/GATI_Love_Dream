@@ -10,7 +10,7 @@
 #include "texture.h"
 #include "manager.h"
 #include "camera.h"
-#include "time.h"
+#include "timer.h"
 
 //マクロ定義
 #define BUTTONWIDTH		(140.0f)		//ポーズ画面ボタン幅

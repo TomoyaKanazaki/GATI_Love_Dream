@@ -100,6 +100,7 @@ m_FogLength(FOG_START)
 	m_pCountDown = NULL;
 	m_nSledCnt = 0;
 	m_bEnd = false;
+	m_nCountDown = 0;
 }
 
 //===============================================
@@ -141,10 +142,12 @@ HRESULT CGame::Init(void)
 	m_pPlayer->SetUp(true);
 	m_pPlayer->SetType(CPlayer::TYPE_ACTIVE);
 	m_pPlayer->BindId(0);
-	m_pCountDown = CCountDown::Create();
+	//m_pCountDown = CCountDown::Create();
 	CNpc::Create(D3DXVECTOR3(-1000.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CNpc::Create(D3DXVECTOR3(-1100.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CNpc::Create(D3DXVECTOR3(-1200.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3000.0f, 10.0f, 10, 10);
+	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 5000.0f, 10.0f, 10, 10);
 
 	if (m_state == STATE_MULTI)
 	{// マルチの場合
@@ -199,13 +202,14 @@ HRESULT CGame::Init(void)
 	// ポーズの生成
 	if (nullptr == m_pPause)
 	{
-		m_pPause = CPause::Create();
+		//m_pPause = CPause::Create();
 	}
 
 	m_pTimer = CObject2D::Create(6);
 	m_pTimer->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.4f, 0.0f));
 	m_pTimer->SetSize(TIME_SIZE.x, TIME_SIZE.y);
-	m_pTimer->SetCol(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+	m_pTimer->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	m_nCountDown = 3;
 
 	// スポットライトをオン
 	//CManager::GetInstance()->GetLight()->EnablePointLight(true);
@@ -301,6 +305,35 @@ void CGame::Update(void)
 {
 	// ポーズ
 	if (m_nCountDown > 0) {
+		// 経過時間を加算
+		CManager::GetInstance()->GetFade()->Update();
+		m_fStartCounter += CManager::GetInstance()->GetDeltaTime();
+
+		if (m_fStartCounter >= 1.0f) {
+			m_fStartCounter = 0.0f;
+			m_nCountDown--;
+
+			if (m_pTimer != nullptr) {
+				switch (m_nCountDown) {
+				case 2:
+					m_pTimer->SetSize(TIME_SIZE.x * 0.5f, TIME_SIZE.y);
+					m_pTimer->SetCol(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+					break;
+
+				case 1:
+					m_pTimer->SetSize(TIME_SIZE.x * 0.25f, TIME_SIZE.y);
+					m_pTimer->SetCol(D3DXCOLOR(0.3f, 0.3f, 1.0f, 1.0f));
+					break;
+
+				default:
+					
+					m_pTimer->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.1f, 0.0f));
+					m_pTimer->SetSize(TIME_SIZE.x * 1.0f, TIME_SIZE.y);
+					m_pTimer->SetCol(D3DXCOLOR(0.5f, 0.75f, 1.0f, 1.0f));
+					break;
+				}
+			}
+		}
 
 		return;
 	}
@@ -336,6 +369,12 @@ void CGame::Update(void)
 		if (m_pScore != nullptr)
 		{
 			m_pScore->Update();
+		}
+
+		if (m_pTimer != nullptr) {
+			float fDest = (1.0f - m_Time / GAME_TIME);
+			m_pTimer->SetSize(TIME_SIZE.x * fDest, TIME_SIZE.y);
+			m_pTimer->SetCol(D3DXCOLOR(0.5f, 0.75f, fDest, 1.0f));
 		}
 
 		// 時間制限

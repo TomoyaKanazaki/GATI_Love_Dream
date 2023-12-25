@@ -164,10 +164,10 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 //==========================================
 //  個別判定チェック(override)
 //==========================================
-bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const int nDamage)
 {
 	// ヒット判定を取得
-	if (!CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax))
+	if (!CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax, nDamage))
 	{
 		return false;
 	}
@@ -175,36 +175,30 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 	// ダメージを受ける
 	if (m_Life < 1.0f)
 	{
-		m_Life += DAMAGE;
+		if (nDamage == 1) {
+			m_Life += DAMAGE;
 
-		// 現在のマテリアルカラーを取得
-		D3DMATERIAL9 material = GetMaterial();
-
-		// カラーをライフと比較する
-		if (material.Diffuse.r < m_Life)
-		{
-			material.Diffuse.r = m_Life;
-
-			// スコアを加算する
-			CGame::GetScore()->AddScorePoint();
+			if (m_Life > 1.0f) {
+				m_Life = 1.0f;
+			}
+			else
+			{
+				CGame::GetScore()->AddScorePoint(20);
+			}
 		}
-		if (material.Diffuse.g < m_Life)
-		{
-			material.Diffuse.g = m_Life;
+		else if (nDamage == 2) {
+			m_Life -= DAMAGE;
 
-			// スコアを加算する
-			CGame::GetScore()->AddScorePoint();
-		}
-		if (material.Diffuse.b < m_Life)
-		{
-			material.Diffuse.b = m_Life;
-
-			// スコアを加算する
-			CGame::GetScore()->AddScorePoint();
+			if (m_Life < 0.0f) {
+				m_Life = 0.0f;
+			}
+			else
+			{
+				CGame::GetScore()->AddScorePoint(-20);
+			}
 		}
 
-		// マテリアルカラーを設定
-		SetMaterial(material);
+		SetLife(m_Life);
 
 		// マテリアル変更フラグをオンにする
 		ChangeCol(true);

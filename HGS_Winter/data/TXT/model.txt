@@ -28,7 +28,7 @@ NUM_MODEL = 5
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/1mcube.x	# [0]砂場
+MODEL_FILENAME = data/MODEL/tree.x	# [0]砂場
 MODEL_FILENAME = data/MODEL/2mcube.x	# [1]木
 MODEL_FILENAME = data/MODEL/3mcube.x	# [2]木
 MODEL_FILENAME = data/MODEL/180mlongCube.x	# [3]木
@@ -88,7 +88,7 @@ END_FIELDSET
 
 # モデル配置
 MODELSET
-	TYPE = 4
+	TYPE = 0
 	POS = 260.0 0.0 -0.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0

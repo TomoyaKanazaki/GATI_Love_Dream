@@ -126,7 +126,7 @@ void CEffect::Update(void)
 		if (!m_bHit) {	// ìñÇΩÇ¡ÇƒÇ¢Ç»Ç¢èÍçá
 			// îªíËÇéÊÇÈ
 			D3DXVECTOR3 vtx = { m_Info.fRadius, m_Info.fRadius, m_Info.fRadius };
-			if(CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, -vtx, vtx)){	// ìñÇΩÇ¡ÇΩ
+			if(CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, -vtx, vtx, 1)){	// ìñÇΩÇ¡ÇΩ
 				m_bHit = true;
 			}
 		}

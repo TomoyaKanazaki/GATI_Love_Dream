@@ -31,7 +31,7 @@ public:	// 誰でもアクセス可能
 	void BindFile(int nIdx);
 
 	static CObjectX *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char *pFileName, const int nPriority = 4);
-	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax);
+	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const int nDamage = 0);
 	void SetRotSize(D3DXVECTOR3 &SetMax, D3DXVECTOR3 &SetMin, D3DXVECTOR3 vtxMax, D3DXVECTOR3 vtxMin, float fRot);
 
 	// メンバ関数(設定)
@@ -47,13 +47,14 @@ public:	// 誰でもアクセス可能
 	CObject2D *GetObject2D(void) { return NULL; }
 	virtual D3DXMATRIX *GetMtx(void) { return &m_mtxWorld; }
 	int GetIdx(void) { return m_nIdxModel; }
+	void SetLife(float fLife) { m_fLife = fLife; }
 	void ListOut(void);
 	int GetModelType(void) { return m_nIdxModel; }
 
 protected:
 
 	// メンバ関数
-	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax);
+	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const int nDamage);
 	void ResetMaterial(const char* pFileName); // 変更後マテリアルの初期化
 
 private:	// 自分だけがアクセス可能
@@ -64,7 +65,7 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数c
 	static CObjectX *m_pTop;	// 先頭のオブジェクトへのポインタ
 	static CObjectX *m_pCur;	// 最後尾のオブジェクトへのポインタ
-
+	float m_fLife;
 	bool m_bChangeCol;		// 色変更をするかどうか
 	D3DMATERIAL9 m_ChangeMat;	// 変更後の色
 	CObjectX *m_pPrev;		// 前のオブジェクトへのポインタ

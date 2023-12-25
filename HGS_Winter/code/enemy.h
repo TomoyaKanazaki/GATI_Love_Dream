@@ -33,10 +33,10 @@ public:
 private:
 
 	// メンバ関数
-	bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax) override;
+	bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const int nDamage) override;
 
 	// メンバ変数
-	// メンバ変数c
+	// メンバ変数
 	static CEnemy *m_pTop;	// 先頭のオブジェクトへのポインタ
 	static CEnemy *m_pCur;	// 最後尾のオブジェクトへのポインタ
 

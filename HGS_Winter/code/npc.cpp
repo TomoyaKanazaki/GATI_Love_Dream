@@ -32,7 +32,7 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(0.4f)		// 移動量
+#define MOVE	(0.31f)		// 移動量
 #define SHW_MOVE	(1.0f)	// シャワー中移動量
 #define PLAYER_GRAVITY	(-0.15f)		//プレイヤー重力
 #define PLAYER_JUMP		(10.0f)		//プレイヤージャンプ力
@@ -51,12 +51,12 @@
 #define SPAWN_INTERVAL	(60.0f)
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
-#define STOP_LENGTH	(400.0f)
+#define STOP_LENGTH	(300.0f)
 
 namespace COOLTIME
 {
-	const int STOP = (120);
-	const int WAIT = (120);
+	const int STOP = (90);
+	const int WAIT = (90);
 }
 
 // 前方宣言

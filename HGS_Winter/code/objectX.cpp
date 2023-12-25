@@ -26,7 +26,7 @@ CObjectX *CObjectX::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
 CObjectX::CObjectX(int nPriority) : CObject(nPriority)
 {
 	m_nIdxModel = -1;
-
+	m_fLife = 0.0f;
 	m_pNext = NULL;
 	m_pPrev = NULL;
 	m_ChangeMat.Ambient = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
@@ -138,8 +138,28 @@ void CObjectX::Draw(void)
 			}
 			else
 			{
-				m_ChangeMat.Power = pMat[nCntMat].MatD3D.Power;
-				m_ChangeMat.Specular = pMat[nCntMat].MatD3D.Specular;
+				m_ChangeMat = pMat[nCntMat].MatD3D;
+
+				// カラーをライフと比較する
+				if (m_ChangeMat.Diffuse.r < m_fLife)
+				{
+					m_ChangeMat.Diffuse.r = m_fLife;
+
+					// スコアを加算する
+					
+				}
+				if (m_ChangeMat.Diffuse.g < m_fLife)
+				{
+					m_ChangeMat.Diffuse.g = m_fLife;
+
+					// スコアを加算する		
+				}
+				if (m_ChangeMat.Diffuse.b < m_fLife)
+				{
+					m_ChangeMat.Diffuse.b = m_fLife;
+
+					// スコアを加算する
+				}
 				pDevice->SetMaterial(&m_ChangeMat);
 			}
 
@@ -250,7 +270,7 @@ void CObjectX::SetRotation(const D3DXVECTOR3& rot)
 //==========================================================
 // 当たり判定
 //==========================================================
-bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const int nDamage)
 {
 	CObjectX *pObj = m_pTop;	// 先頭取得
 	bool bLand = false;	// 着地したか否か
@@ -260,7 +280,7 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 		CObjectX *pObjNext = pObj->m_pNext;
 		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		if (pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax))
+		if (pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax, nDamage))
 		{
 			bLand = true;
 		}
@@ -342,7 +362,7 @@ void CObjectX::SetRotSize(D3DXVECTOR3 &SetMax, D3DXVECTOR3 &SetMin, D3DXVECTOR3 
 //==========================================================
 // 個別判定チェック
 //==========================================================
-bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const int)
 {
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	bool bLand = false;	// 着地したか否か

@@ -61,7 +61,7 @@
 //===============================================
 // 静的メンバ変数
 //===============================================
-CGame::STATE CGame::m_state = CGame::STATE_MULTI;	// 状態
+CGame::STATE CGame::m_state = CGame::STATE_TIMEATTACK;	// 状態
 
 //===============================================
 // コンストラクタ
@@ -108,34 +108,27 @@ HRESULT CGame::Init(void)
 	// 外部ファイル読み込みの生成
 	if (nullptr == m_pFileLoad)
 	{// 使用していない場合
-		m_pFileLoad = new CFileLoad;
+		//m_pFileLoad = new CFileLoad;
 
 		if (m_pFileLoad != NULL)
 		{
-			m_pFileLoad->Init();
-			m_pFileLoad->OpenFile("data\\TXT\\model.txt");
+			//m_pFileLoad->Init();
+			//m_pFileLoad->OpenFile("data\\TXT\\model.txt");
 		}
 	}
 
-	// エディターの生成
-	if (nullptr == m_pEditor)
-	{
-		m_pEditor = new CEditor;
-		m_pEditor->Init();
-	}
-
 	// マップの生成
-	CObject2D *pObj = CObject2D::Create();
-	pObj->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\map.png"));
-	pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.95f, 0.0f));
-	pObj->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.05f);
+	//CObject2D *pObj = CObject2D::Create();
+	//pObj->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\map.png"));
+	//pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.95f, 0.0f));
+	//pObj->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.05f);
 
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	m_pPlayer->SetUp(true);
-	m_pPlayer->SetType(CPlayer::TYPE_SEND);
-	m_pCountDown = CCountDown::Create();
+	//m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//m_pPlayer->SetUp(true);
+	//m_pPlayer->SetType(CPlayer::TYPE_SEND);
+	//m_pCountDown = CCountDown::Create();
 
-	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(-8000.0f, -300.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10000.0f, 10.0f, 10, 10);
+	//m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(-8000.0f, -300.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10000.0f, 10.0f, 10, 10);
 
 	if (m_state == STATE_MULTI)
 	{// マルチの場合
@@ -164,12 +157,12 @@ HRESULT CGame::Init(void)
 	}
 	else
 	{
-		m_pTime = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT * 0.075f, 0.0f));
-		m_pTime->Set(180 * 100);
+		//m_pTime = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT * 0.075f, 0.0f));
+		//m_pTime->Set(180 * 100);
 	}
 	
 	// ギミック設置
-	GimmickSet();
+	//GimmickSet();
 
 	//カメラ初期化
 	{
@@ -192,7 +185,7 @@ HRESULT CGame::Init(void)
 	}
 
 	// スポットライトをオン
-	CManager::GetInstance()->GetLight()->EnablePointLight(true);
+	//CManager::GetInstance()->GetLight()->EnablePointLight(true);
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
@@ -262,58 +255,6 @@ void CGame::Uninit(void)
 //===============================================
 void CGame::Update(void)
 {
-	if (m_pCountDown != nullptr)
-	{
-		CScene::Update();
-
-		int nSetUp = 0;
-
-		CPlayer *pPlayer = NULL;		// 先頭を取得
-		CPlayer *pPlayerNext = NULL;	// 次を保持
-		pPlayer = CPlayer::GetTop();	// 先頭を取得
-
-		while (pPlayer != NULL)
-		{// 使用されている間繰り返し
-			pPlayerNext = pPlayer->GetNext();	// 次を保持
-
-			if (pPlayer->GetSetUp() == true)
-			{
-				nSetUp++;
-			}
-
-			pPlayer = pPlayerNext;	// 次に移動
-		}
-
-		SendSetUp();
-
-		if ((m_state == STATE_TIMEATTACK && m_pPlayer->GetSetUp() == true) || (m_state == STATE_MULTI && nSetUp >= 2 && CPlayer::GetNum() >= 2))
-		{
-			if (!m_pCountDown->GetEnd())
-			{
-				m_pCountDown->Update();
-				return;
-			}
-			else
-			{
-				m_pPlayer->SetType(CPlayer::TYPE_ACTIVE);
-				if (m_pTime != nullptr)
-				{
-					m_pTime->SetActive(true);
-				}
-				if (m_pCountDown != nullptr)
-				{
-					m_pCountDown->Uninit();
-					delete m_pCountDown;
-					m_pCountDown = nullptr;
-				}
-			}
-		}
-		else
-		{
-			return;
-		}
-	}
-
 	// ポーズ
 	if (m_pPause != NULL)
 	{
@@ -326,104 +267,6 @@ void CGame::Update(void)
 				CManager::GetInstance()->GetFade()->Update();
 			}
 			return;
-		}
-	}
-
-#if _DEBUG
-
-	if (m_pEditor != NULL)
-	{
-		m_pEditor->Update();
-
-		if (m_pEditor->GetActive())
-		{
-			return;
-		}
-	}
-
-#endif
-
-	if (m_pTime != NULL)
-	{
-		m_pTime->Update();
-
-		if (m_pTime->GetNum() <= 0 && m_state == STATE_TIMEATTACK)
-		{
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-			CResult::SetScore(m_pTime->GetNum());
-		}
-	}
-
-	// ゴール判定
-	if (m_pPlayer != NULL)
-	{
-		if (m_pPlayer->GetPosition().x < -15000.0f)
-		{
-			// マルチプレイ
-			if (m_state == STATE_MULTI && CResult::GetType() == CResult::TYPE_MAX)
-			{
-				int nSetUp = 0;
-
-				CPlayer *pPlayer = NULL;		// 先頭を取得
-				CPlayer *pPlayerNext = NULL;	// 次を保持
-				pPlayer = CPlayer::GetTop();	// 先頭を取得
-
-				while (pPlayer != NULL)
-				{// 使用されている間繰り返し
-					pPlayerNext = pPlayer->GetNext();	// 次を保持
-
-					if (pPlayer->GetGoal())
-					{
-						nSetUp++;
-					}
-
-					pPlayer = pPlayerNext;	// 次に移動
-				}
-
-				if (nSetUp == 0)
-				{
-					CResult::SetType(CResult::TYPE_MULTI_WIN);
-				}
-				else
-				{
-					CResult::SetType(CResult::TYPE_MULTI_LOSE);
-				}
-			}
-
-			m_pPlayer->SetGoal(true);
-			if (m_pTime != nullptr)
-			{
-				CResult::SetScore(m_pTime->GetNum());
-				m_pTime->SetActive(false);
-			}
-			SendGoal();
-		}
-	}
-	{
-		int nSetUp = 0;
-
-		CPlayer *pPlayer = NULL;		// 先頭を取得
-		CPlayer *pPlayerNext = NULL;	// 次を保持
-		pPlayer = CPlayer::GetTop();	// 先頭を取得
-
-		while (pPlayer != NULL)
-		{// 使用されている間繰り返し
-			pPlayerNext = pPlayer->GetNext();	// 次を保持
-
-			if (pPlayer->GetGoal())
-			{
-				nSetUp++;
-			}
-
-			pPlayer = pPlayerNext;	// 次に移動
-		}
-
-		SendSetUp();
-
-		if ((m_state == STATE_TIMEATTACK && m_pPlayer->GetGoal() == true) || (m_state == STATE_MULTI && nSetUp >= 2 && CPlayer::GetNum() >= 2))
-		{
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-			m_bEnd = true;
 		}
 	}
 
@@ -505,128 +348,7 @@ CEditor *CGame::GetEditor(void)
 //===================================================
 void CGame::GimmickSet(void)
 {
-	// 移動
-	CGimmickMove *pMove = CGimmickMove::Create(D3DXVECTOR3(-7300.0f, 0.0f, -2100.0f), D3DXVECTOR3(0.0f, 0.0f, 2.0f), 300.0f);
-	pMove = CGimmickMove::Create(D3DXVECTOR3(-7800.0f, 0.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, -3.0f), 120.0f);
-	pMove = CGimmickMove::Create(D3DXVECTOR3(-8000.0f, 0.0f, -1980.0f), D3DXVECTOR3(-8.0f, 0.0f, 0.0f), 60.0f);
-	pMove = CGimmickMove::Create(D3DXVECTOR3(-8400.0f, 0.0f, -1500.0f), D3DXVECTOR3(4.0f, 0.0f, 0.0f), 100.0f);
-	pMove = CGimmickMove::Create(D3DXVECTOR3(-9400.0f, 0.0f, -2100.0f), D3DXVECTOR3(-4.0f, 0.0f, 4.0f), 150.0f);
-	pMove = CGimmickMove::Create(D3DXVECTOR3(-9400.0f, 0.0f, -1400.0f), D3DXVECTOR3(-6.0f, 0.0f, -6.0f), 100.0f);
-	pMove = CGimmickMove::Create(D3DXVECTOR3(-14100.0f, 0.0f, -2250.0f), D3DXVECTOR3(0.0f, 0.0f, -3.0f), 100.0f);
-
-	// 回転
-	CGimmickRotate *p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-5625.0f, 0.0f, -350.0f));
-	p->SetRotate(p->GetRotate() * 1.0f);
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-6900.0f, 0.0f, -850.0f));
-	p->SetRotate(p->GetRotate() * 0.8f);
-	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.1f, 0.0f));
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-7900.0f, 0.0f, -850.0f));
-	p->SetRotate(p->GetRotate() * -1.0f);
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-8900.0f, 0.0f, -850.0f));
-	p->SetRotate(p->GetRotate() * 1.2f);
-	p->SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-8900.0f, 0.0f, -850.0f));
-	p->SetRotate(p->GetRotate() * 1.2f);
-	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-9900.0f, 0.0f, -850.0f));
-	p->SetRotate(p->GetRotate() * -1.5f);
-	p->SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-9900.0f, 0.0f, -850.0f));
-	p->SetRotate(p->GetRotate() * -1.5f);
-	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-12850.0f, 0.0f, -2125.0f));
-	p->SetRotate(p->GetRotate() * 1.0f);
-	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	p = CGimmickRotate::Create();
-	p->SetPosition(D3DXVECTOR3(-13550.0f, 0.0f, 960.0f));
-	p->SetRotate(p->GetRotate() * 1.0f);
-	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	// 魚
-	CGimmickFish *pFish = CGimmickFish::Create();
-	pFish->SetPosition(D3DXVECTOR3(-850.0f, -750.0f, 150.0f));
-	pFish->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
-
-	pFish = CGimmickFish::Create();
-	pFish->SetPosition(D3DXVECTOR3(-3950.0f, -750.0f, -650.0f));
-
-	pFish = CGimmickFish::Create();
-	pFish->SetPosition(D3DXVECTOR3(-8800.0f, -750.0f, -1750.0f));
-
-	pFish = CGimmickFish::Create();
-	pFish->SetPosition(D3DXVECTOR3(-14400.0f, -750.0f, 650.0f));
-	pFish->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	pFish = CGimmickFish::Create();
-	pFish->SetPosition(D3DXVECTOR3(-12700.0f, -750.0f, 275.0f));
-	pFish->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
-
-	// ボタン配置
-	CGimmickButton *pButton = CGimmickButton::Create();
-	pButton->SetPosition(D3DXVECTOR3(-14640.0f, 0.0f, -2050.0f));
-	pButton->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-	pButton->SetGoalPos(D3DXVECTOR3(-14680.0f, 0.0f, -2050.0f));
-	pButton->SetType(CGimmickButton::TYPE_REVERSE);
-
-	pButton = CGimmickButton::Create();
-	pButton->SetPosition(D3DXVECTOR3(-14400.0f, 0.0f, 110.0f));
-	pButton->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.0f, 0.0f));
-	pButton->SetGoalPos(D3DXVECTOR3(-14400.0f, 0.0f, 70.0f));
-	pButton->SetType(CGimmickButton::TYPE_DOOR);
-
-	// ドア配置
-	CGimmickDoor *pDoor = CGimmickDoor::Create();
-	pDoor->SetPosition(D3DXVECTOR3(-13810.0f, 0.0f, -750.0f));
-	pDoor->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	// 風配置
-	CGimmickAir *pAir = CGimmickAir::Create();
-	pAir->SetPosition(D3DXVECTOR3(-13525.0f, 80.0f, -800.0f));
-	pAir->SetMove(D3DXVECTOR3(0.0f, 0.0f, -0.5f));
-	pAir->SetHeight(750.0f);
-	pAir->SetWidth(250.0f);
-
-	pAir = CGimmickAir::Create();
-	pAir->SetPosition(D3DXVECTOR3(-12800.0f, 80.0f, -1325.0f));
-	pAir->SetMove(D3DXVECTOR3(0.5f, 0.0f, 0.0f));
-	pAir->SetHeight(225.0f);
-	pAir->SetWidth(950.0f);
-
-	pAir = CGimmickAir::Create();
-	pAir->SetPosition(D3DXVECTOR3(-12800.0f, 80.0f, -275.0f));
-	pAir->SetMove(D3DXVECTOR3(-0.5f, 0.0f, 0.0f));
-	pAir->SetHeight(225.0f);
-	pAir->SetWidth(950.0f);
-
-	pAir = CGimmickAir::Create();
-	pAir->SetPosition(D3DXVECTOR3(-14000.0f, 80.0f, -1875.0f));
-	pAir->SetMove(D3DXVECTOR3(0.75f, 0.0f, 0.0f));
-	pAir->SetHeight(225.0f);
-	pAir->SetWidth(250.0f);
-	pAir->SetRevease(true);
-
-	pAir = CGimmickAir::Create();
-	pAir->SetPosition(D3DXVECTOR3(-13935.0f, 80.0f, 265.0f));
-	pAir->SetMove(D3DXVECTOR3(0.85f, 0.0f, 0.0f));
-	pAir->SetHeight(205.0f);
-	pAir->SetWidth(185.0f);
-	pAir->SetRevease(true);
+	
 }
 
 //===================================================

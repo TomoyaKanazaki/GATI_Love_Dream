@@ -1,35 +1,33 @@
 //==========================================================
 //
-// サンプル [sample.h]
+// サンプルタスク [sample_task.h]
 // Author : Ibuki Okusada
 //
 //==========================================================
-#ifndef _SAMPLE_H_		// このマクロが定義されていない場合
-#define _SAMPLE_H_		// 二重インクルード防止用マクロを定義
+#ifndef _SAMPLETASK_H_		// このマクロが定義されていない場合
+#define _SAMPLETASK_H_		// 二重インクルード防止用マクロを定義
 
-#include "../object.h"
+#include "../task.h"
+//#include "task.h"	// これでファイルインクルードできます
 
 //==========================================================
 // サンプルのクラス定義
 //==========================================================
-class CSample : public CObject
+class CSampleTask : public CTask
 {
 
 public:	// 誰でもアクセス可能
 
-	//CSample();	// コンストラクタ
-	CSample(int nPriOrity = 3);	// コンストラクタ(オーバーロード)
-	~CSample();	// デストラクタ
+	CSampleTask();	// コンストラクタ(オーバーロード)
+	~CSampleTask();	// デストラクタ
 
 	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	void Draw(void);
-	static CSample *Create(void);
+	static CSampleTask *Create(void);
 
 	// メンバ関数(取得)
-	
 
 	// メンバ関数(設定)
 
@@ -41,4 +39,3 @@ private:	// 自分だけがアクセス可能
 };
 
 #endif
-

@@ -1,25 +1,25 @@
 //==========================================================
 //
-// サンプル [sample.cpp]
+// サンプルタスク [sample_task.cpp]
 // Author : Ibuki Okusada
 //
 //==========================================================
-#include "sample.h"
+#include "sample_task.h"
 
 // マクロ定義
 
 //==========================================================
 // コンストラクタ
 //==========================================================
-CSample::CSample(int nPriOrity) : CObject(nPriOrity)
+CSampleTask::CSampleTask()
 {
-
+	// 値のクリア
 }
 
 //==========================================================
 // デストラクタ
 //==========================================================
-CSample::~CSample()
+CSampleTask::~CSampleTask()
 {
 
 }
@@ -27,7 +27,7 @@ CSample::~CSample()
 //==========================================================
 // 初期化処理
 //==========================================================
-HRESULT CSample::Init(void)
+HRESULT CSampleTask::Init(void)
 {
 	return S_OK;
 }
@@ -35,7 +35,7 @@ HRESULT CSample::Init(void)
 //==========================================================
 // 終了処理
 //==========================================================
-void CSample::Uninit(void)
+void CSampleTask::Uninit(void)
 {
 	Release();
 }
@@ -43,27 +43,21 @@ void CSample::Uninit(void)
 //==========================================================
 // 更新処理
 //==========================================================
-void CSample::Update(void)
+void CSampleTask::Update(void)
 {
 
-}
-
-//==========================================================
-// 描画処理
-//==========================================================
-void CSample::Draw(void)
-{
-	
 }
 
 //==========================================================
 // 生成
 //==========================================================
-CSample *CSample::Create(void)
+CSampleTask *CSampleTask::Create(void)
 {
-	CSample *pSample = nullptr;
+	CSampleTask *pSample = nullptr;
 
-	if (pSample != NULL)
+	pSample = new CSampleTask;
+
+	if (pSample != nullptr)
 	{
 		// 初期化処理
 		pSample->Init();

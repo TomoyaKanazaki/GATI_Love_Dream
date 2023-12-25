@@ -23,16 +23,17 @@ TEXTURE_FILENAME = data/TEXTURE/arrow001.jpg			# [2]ゴール線
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 5
+NUM_MODEL = 6
 
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/tree.x		# [0]砂場
-MODEL_FILENAME = data/MODEL/seesaw.x	# [1]木
-MODEL_FILENAME = data/MODEL/swing.x		# [2]木
-MODEL_FILENAME = data/MODEL/dome.x		# [3]木
-MODEL_FILENAME = data/MODEL/5mcube.x	# [4]フェンス上
+MODEL_FILENAME = data/MODEL/tree.x		# [0]木
+MODEL_FILENAME = data/MODEL/seesaw.x	# [1]シーソー
+MODEL_FILENAME = data/MODEL/swing.x		# [2]ブランコ
+MODEL_FILENAME = data/MODEL/dome.x		# [3]かまくら
+MODEL_FILENAME = data/MODEL/heart.x		# [4]ガチ恋のオブジェ(ハート)
+MODEL_FILENAME = data/MODEL/star.x		# [5]ガチ恋のオブジェ(スター)
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -111,6 +112,20 @@ END_ENEMYSET
 ENEMYSET
 	TYPE = 2
 	POS = 0.0 0.0 -2000.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_ENEMYSET
+
+ENEMYSET
+	TYPE = 4
+	POS = 1000.0 0.0 0.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_ENEMYSET
+
+ENEMYSET
+	TYPE = 5
+	POS = -1000.0 0.0 0.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_ENEMYSET

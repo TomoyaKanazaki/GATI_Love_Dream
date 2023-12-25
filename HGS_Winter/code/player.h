@@ -118,7 +118,6 @@ private:	// 自分だけがアクセス可能
 	static CPlayer *m_pCur;	// 最後尾のオブジェクトへのポインタ
 	CPlayer *m_pPrev;	// 前のオブジェクトへのポインタ
 	CPlayer *m_pNext;	// 次のオブジェクトへのポインタ
-	CObjectBillboard **m_ppBillBoard;
 	SInfo m_Info;			// 自分自身の情報
 	CCharacter *m_pObject;	// 描画オブジェクト
 	float m_fRotMove;		// 現在の角度

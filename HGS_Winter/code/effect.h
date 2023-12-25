@@ -35,6 +35,7 @@ private:	// 自分だけアクセス可能な定義
 	{
 		float fLife;	// 寿命
 		D3DXVECTOR3 pos;	// 位置
+		D3DXVECTOR3 posOld;	// 前回の位置
 		TYPE Type;	// 種類
 		D3DXCOLOR col;	//色
 		D3DXVECTOR3 move;	// 移動量

@@ -162,6 +162,7 @@ HRESULT CGame::Init(void)
 	//カメラ初期化
 	{
 		CManager::GetInstance()->GetCamera()->Init();
+		CManager::GetInstance()->GetCamera()->SetLength(1000.0f);
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定
 		viewport.X = 0;

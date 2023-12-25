@@ -14,23 +14,23 @@ NUM_MODEL = 17
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/player/waist.x				# [0]腰
-MODEL_FILENAME = data/MODEL/player/body.x				# [1]体
-MODEL_FILENAME = data/MODEL/player/head.x				# [2]頭
-MODEL_FILENAME = data/MODEL/player/rightshoulder.x		# [3]右肩
-MODEL_FILENAME = data/MODEL/player/rightupperarm.x		# [4]右上腕
-MODEL_FILENAME = data/MODEL/player/rightforearm.x		# [5]右前腕
-MODEL_FILENAME = data/MODEL/player/righthand.x			# [6]右手
-MODEL_FILENAME = data/MODEL/player/leftshoulder.x		# [7]左肩
-MODEL_FILENAME = data/MODEL/player/leftupperarm.x		# [8]左上腕
-MODEL_FILENAME = data/MODEL/player/leftforearm.x		# [9]左前腕
-MODEL_FILENAME = data/MODEL/player/lefthand.x			# [10]左手
-MODEL_FILENAME = data/MODEL/player/righthigh.x			# [11]右腿
-MODEL_FILENAME = data/MODEL/player/rightcalf.x			# [12]右脛
-MODEL_FILENAME = data/MODEL/player/rightleg.x			# [13]右足
-MODEL_FILENAME = data/MODEL/player/lefthigh.x			# [14]左腿
-MODEL_FILENAME = data/MODEL/player/leftcalf.x			# [15]左脛
-MODEL_FILENAME = data/MODEL/player/leftleg.x			# [16]左足
+MODEL_FILENAME = data/MODEL/Enemy/waist.x				# [0]腰
+MODEL_FILENAME = data/MODEL/Enemy/body.x				# [1]体
+MODEL_FILENAME = data/MODEL/Enemy/head.x				# [2]頭
+MODEL_FILENAME = data/MODEL/Enemy/rightshoulder.x		# [3]右肩
+MODEL_FILENAME = data/MODEL/Enemy/rightupperarm.x		# [4]右上腕
+MODEL_FILENAME = data/MODEL/Enemy/rightforearm.x		# [5]右前腕
+MODEL_FILENAME = data/MODEL/Enemy/righthand.x			# [6]右手
+MODEL_FILENAME = data/MODEL/Enemy/leftshoulder.x		# [7]左肩
+MODEL_FILENAME = data/MODEL/Enemy/leftupperarm.x		# [8]左上腕
+MODEL_FILENAME = data/MODEL/Enemy/leftforearm.x		# [9]左前腕
+MODEL_FILENAME = data/MODEL/Enemy/lefthand.x			# [10]左手
+MODEL_FILENAME = data/MODEL/Enemy/righthigh.x			# [11]右腿
+MODEL_FILENAME = data/MODEL/Enemy/rightcalf.x			# [12]右脛
+MODEL_FILENAME = data/MODEL/Enemy/rightleg.x			# [13]右足
+MODEL_FILENAME = data/MODEL/Enemy/lefthigh.x			# [14]左腿
+MODEL_FILENAME = data/MODEL/Enemy/leftcalf.x			# [15]左脛
+MODEL_FILENAME = data/MODEL/Enemy/leftleg.x			# [16]左足
 
 #------------------------------------------------------------------------------
 # キャラクター情報

@@ -19,7 +19,7 @@ namespace
 {
 	const int MAX_SCORE = 99999999; // スコアの最大値
 	const D3DXVECTOR2 NUM_SIZE = D3DXVECTOR2(80.0f, 120.0f); // 数字のサイズ
-	const D3DXVECTOR3 NUM_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - NUM_SIZE.x * (NUM_NUM * 0.5f - 0.5f), SCREEN_HEIGHT * 0.5f, 0.0f); // 数字の位置
+	const D3DXVECTOR3 NUM_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - NUM_SIZE.x * (NUM_NUM * 0.5f - 0.5f), SCREEN_HEIGHT * 0.7f, 0.0f); // 数字の位置
 }
 
 //==========================================

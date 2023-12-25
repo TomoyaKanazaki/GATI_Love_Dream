@@ -533,6 +533,7 @@ void CPlayer::Controller(void)
 		return;
 	}
 
+
 	if (m_pObject->GetMotion()->GetNowMotion() == 1 && m_pObject->GetMotion()->GetNowFrame() == 0)
 	{
 		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SKI);			// •œŠˆ‰¹

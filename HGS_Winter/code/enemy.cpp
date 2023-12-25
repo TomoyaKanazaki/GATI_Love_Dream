@@ -8,6 +8,7 @@
 #include "Xfile.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "score.h"
 
 //==========================================
 //  定数定義
@@ -120,30 +121,39 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 	if (m_Life < 1.0f)
 	{
 		m_Life += DAMAGE;
-	}
 
-	// 現在のマテリアルカラーを取得
-	D3DMATERIAL9 material = GetMaterial();
+		// 現在のマテリアルカラーを取得
+		D3DMATERIAL9 material = GetMaterial();
 
-	// カラーをライフと比較する
-	if (material.Diffuse.r < m_Life)
-	{
-		material.Diffuse.r = m_Life;
-	}
-	if (material.Diffuse.g < m_Life)
-	{
-		material.Diffuse.g = m_Life;
-	}
-	if (material.Diffuse.b < m_Life)
-	{
-		material.Diffuse.b = m_Life;
-	}
+		// カラーをライフと比較する
+		if (material.Diffuse.r < m_Life)
+		{
+			material.Diffuse.r = m_Life;
 
-	// マテリアルカラーを設定
-	SetMaterial(material);
+			// スコアを加算する
+			CManager::GetInstance()->GetScore()->AddScorePoint();
+		}
+		if (material.Diffuse.g < m_Life)
+		{
+			material.Diffuse.g = m_Life;
 
-	// マテリアル変更フラグをオンにする
-	ChangeCol(true);
+			// スコアを加算する
+			CManager::GetInstance()->GetScore()->AddScorePoint();
+		}
+		if (material.Diffuse.b < m_Life)
+		{
+			material.Diffuse.b = m_Life;
+
+			// スコアを加算する
+			CManager::GetInstance()->GetScore()->AddScorePoint();
+		}
+
+		// マテリアルカラーを設定
+		SetMaterial(material);
+
+		// マテリアル変更フラグをオンにする
+		ChangeCol(true);
+	}
 
 	// ヒットで返す
 	return true;

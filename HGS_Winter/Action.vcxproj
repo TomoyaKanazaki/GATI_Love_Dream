@@ -166,6 +166,7 @@
     <ClCompile Include="code\enemy.cpp" />
     <ClCompile Include="code\fade.cpp" />
     <ClCompile Include="code\fileload.cpp" />
+    <ClCompile Include="code\fog.cpp" />
     <ClCompile Include="code\game.cpp" />
     <ClCompile Include="code\gimmick_air.cpp" />
     <ClCompile Include="code\gimmick_door.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="code\enemy.h" />
     <ClInclude Include="code\fade.h" />
     <ClInclude Include="code\fileload.h" />
+    <ClInclude Include="code\fog.h" />
     <ClInclude Include="code\game.h" />
     <ClInclude Include="code\gimmick_door.h" />
     <ClInclude Include="code\gimmick_fish.h" />

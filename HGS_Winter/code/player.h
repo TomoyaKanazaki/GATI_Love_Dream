@@ -134,6 +134,7 @@ private:	// 自分だけがアクセス可能
 	CObject2D *m_pGoal;
 	int m_nLife;	// 体力
 	int m_nId;	// ID
+	bool m_bMove;			// 移動したかどうか
 	bool m_bSetUp;	// 準備完了かどうか
 	TYPE m_type;	// 種類
 	bool m_bGoal;	// ゴールしたか

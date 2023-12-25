@@ -35,17 +35,17 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(0.1f)		// 移動量
+#define MOVE	(1.0f)		// 移動量
 #define SHW_MOVE	(1.0f)	// シャワー中移動量
 #define PLAYER_GRAVITY	(-0.15f)		//プレイヤー重力
 #define PLAYER_JUMP		(10.0f)		//プレイヤージャンプ力
 #define ROT_MULTI	(0.075f)	// 向き補正倍率
 #define WIDTH	(20.0f)		// 幅
 #define HEIGHT	(80.0f)	// 高さ
-#define INER	(0.003f)		// 慣性
+#define INER	(0.015f)		// 慣性
+#define STOP_INER (0.1f)	// 停止慣性
 #define STEP_SPEED	(50.0f)
 #define STEP_COOLTIME	(90.0f)
-#define STEP_INER	(0.05f)
 #define START_LIFE	(4)	// 初期体力
 #define DAMAGE_INTERVAL	(10.0f)
 #define DAMAGE_APPEAR	(110.0f)
@@ -380,7 +380,7 @@ void CPlayer::Update(void)
 		m_Info.state = STATE_DEATH;
 		m_Info.fStateCounter = DEATH_INTERVAL;
 
-		CParticle::Create(m_Info.pos, CEffect::TYPE_BALEXPLOSION);
+		
 	}
 	else if (m_nLife > 0 && (m_Info.state != STATE_DEATH && m_Info.state != STATE_APPEAR))
 	{// 体力ある
@@ -389,7 +389,7 @@ void CPlayer::Update(void)
 		if (m_fEffectCount >= PARTICLE_TIMER)
 		{
 			m_fEffectCount = 0.0f;
-			CParticle::Create(m_Info.pos, CEffect::TYPE_BUBBLE);
+			
 		}
 	}
 
@@ -497,6 +497,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 pos = GetPosition();	// 座標を取得
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	CCamera *pCamera = CManager::GetInstance()->GetCamera();					// カメラのポインタ
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();								// カメラの角度
 	bool bDamage = false;
 	m_fRotMove = rot.y;	//現在の向きを取得
@@ -504,25 +505,16 @@ void CPlayer::Controller(void)
 
 	// 操作処理
 	{
-		Move();		// 移動
+		if (pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == false)
+		{
+			Move();		// 移動
+		}
 		Rotation();	// 回転
 	}
 
 	pos = GetPosition();	// 座標を取得
 
 	// 慣性(ステップ状態別)
-	if (m_fStepCoolTime <= 0.0f)
-	{
-		m_Info.move.x += (0.0f - m_Info.move.x) * INER;	//x座標
-		m_Info.move.z += (0.0f - m_Info.move.z) * INER;	//x座標
-	}
-	else
-	{
-		m_fStepCoolTime -= CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x += (0.0f - m_Info.move.x) * STEP_INER;	//x座標
-		m_Info.move.z += (0.0f - m_Info.move.z) * STEP_INER;	//x座標
-	}
-
 	pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
 	pos.z += m_Info.move.z * CManager::GetInstance()->GetSlow()->Get();
 
@@ -577,10 +569,15 @@ void CPlayer::Controller(void)
 		}
 	}
 
-	if (nDamage < 0)
 	{
-		m_Info.move.x += (0.0f - m_Info.move.x) * STEP_INER;	//x座標
-		m_Info.move.z += (0.0f - m_Info.move.z) * STEP_INER;	//x座標
+		float fIner = INER;
+		if (pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == true)
+		{
+			fIner = STOP_INER;
+		}
+
+		m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
+		m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
 	}
 
 	// 壁との当たり判定
@@ -613,28 +610,74 @@ void CPlayer::Move(void)
 		return;
 	}
 
-	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, 0))
+	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_MINUS) == true)
 	{
-		if (m_fStepCoolTime <= 0.0f && m_Info.state != STATE_DAMAGE)
+		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 		{
-			m_fStepCoolTime = STEP_COOLTIME;
-			m_Info.move.x = -sinf(m_Info.rot.y) * STEP_SPEED;
-			m_Info.move.z = -cosf(m_Info.rot.y) * STEP_SPEED;
-			m_Info.state = STATE_APPEAR;
-			m_Info.fStateCounter = DASH_INTERVAL;
-
-			if (m_type == TYPE_ACTIVE)
-			{
-				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
-			}
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
+			m_fRotDest = (-CamRot.y + D3DX_PI * 0.25f);
 		}
-	}
+		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
+		{
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
+			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.25f);
+		}
+		else
+		{
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed;
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed;
+			m_fRotDest = -CamRot.y;
+		}
 
-	//プレイヤーの更新
-	if (pInputKey->GetPress(DIK_SPACE) || pInputPad->GetPress(CInputPad::BUTTON_A, 0))
+		// 移動した状態にする
+		m_bMove = true;
+	}
+	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_PLUS) == true)
 	{
-		m_Info.move.x += -sinf(m_Info.rot.y) * fSpeed;
-		m_Info.move.z += -cosf(m_Info.rot.y) * fSpeed;
+		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
+		{
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
+
+			m_fRotDest = (-CamRot.y + D3DX_PI * 0.75f);
+		}
+		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
+		{
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
+
+			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.75f);
+		}
+		else
+		{
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed;
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed;
+			m_fRotDest = (-CamRot.y + D3DX_PI * 1.0f);
+		}
+
+		// 移動した状態にする
+		m_bMove = true;
+	}
+	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
+	{
+		m_Info.move.x += -cosf(CamRot.y) * fSpeed;
+		m_Info.move.z += -sinf(CamRot.y) * fSpeed;
+		m_fRotDest = (-CamRot.y + D3DX_PI * 0.5f);
+
+		// 移動した状態にする
+		m_bMove = true;
+
+	}
+	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
+	{
+		m_Info.move.x += cosf(CamRot.y) * fSpeed;
+		m_Info.move.z += sinf(CamRot.y) * fSpeed;
+		m_fRotDest = (-CamRot.y + -D3DX_PI * 0.5f);
+
+		// 移動した状態にする
+		m_bMove = true;
 	}
 }
 

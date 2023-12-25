@@ -7,13 +7,16 @@
 #ifndef _EFFECT_H_
 #define _EFFECT_H_
 
-#include "object2D.h"
-#include "billboard.h"
+#include "task.h"
+#include "texture.h"
+
+// 前方宣言
+class CObjectBillboard;
 
 //===============================================
 //クラスの定義
 //===============================================
-class CEffect : public CObjectBillboard
+class CEffect : public CTask
 {
 public:	// 誰でもアクセス可能な定義
 
@@ -21,30 +24,32 @@ public:	// 誰でもアクセス可能な定義
 	typedef enum
 	{
 		TYPE_NONE = 0,	// 通常
-		TYPE_BULLET,	// 弾
-		TYPE_EXPLOSION,	// 爆発
-		TYPE_DUST,		// 土煙
-		TYPE_SHWBULLET,	// シャワー弾
-		TYPE_SHWREF,	// 地面反射シャワー
-		TYPE_SWEAT,		// 汗
-		TYPE_HEAT,		// 熱中症状態
-		TYPE_JUMP,		// ジャンプ
-		TYPE_SWAP,		// 軌跡っぽいの
-		TYPE_BALEXPLOSION,	// 風船爆発
 		TYPE_SMAKE,		// 煙
-		TYPE_HEATHAZE,	// 陽炎
-		TYPE_BUBBLE,		// シャボン玉
+		TYPE_ITEMGET,		// アイテム獲得
+		TYPE_LANDCLEAR,	// 着地成功
+		TYPE_LANDFAILED,	// 失敗
+		TYPE_HIT,		// 攻撃ヒット
+		TYPE_SPEAR,		// 槍
+		TYPE_BLACKSMAKE,	// 黒い煙
+		TYPE_WALK,		// 歩き
+		TYPE_KUNAI,		// クナイ
+		TYPE_BUTTON,		// ボタン
+		TYPE_ROTATEDOOR,	// 回転ドア
+		TYPE_ITEMBOX,		// アイテムボックス
+		TYPE_ITEMBOXSTAR,	// アイテムボックスのキラキラ
+		TYPE_RESULTZITABATA,	// リザルト失敗じたばた
+		TYPE_PULLSTAR,	// 引くオブジェクト表示
+		TYPE_PULLNOW,		// 引いている時
+		TYPE_AIR,		// 風神の術
+		TYPE_CATCH,		// 掴まれた時の汗
+		TYPE_JUMP,		// ジャンプ
+		TYPE_LAND,		// 着地
+		TYPE_PARTY,		// タイトル
+		TYPE_TUTORIAL,	// チュートリアル
+		TYPE_PULLSMAKE,	// 引き中の手
+		TYPE_DUST,		// 埃
 		TYPE_MAX
 	}TYPE;
-
-	// 合成方法列挙型
-	enum FUSION
-	{
-		FUSION_ADD = 0,	// 加算合成
-		FUSION_MINUS,		// 減算合成
-		FUSION_NORMAL,	// 合成しない
-		FUSION_MAX
-	};
 
 private:	// 自分だけアクセス可能な定義
 
@@ -52,6 +57,7 @@ private:	// 自分だけアクセス可能な定義
 	typedef struct
 	{
 		float fLife;	// 寿命
+		D3DXVECTOR3 pos;	// 位置
 		TYPE Type;	// 種類
 		D3DXCOLOR col;	//色
 		D3DXVECTOR3 move;	// 移動量
@@ -60,33 +66,37 @@ private:	// 自分だけアクセス可能な定義
 
 public:	// 誰でもアクセス可能
 
-	//CEffect();	// コンストラクタ
-	CEffect(int nPriority = 5);	// デフォルト引数コンストラクタ
+	CEffect();	// コンストラクタ
 	~CEffect();	// デストラクタ
 
 	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	void Draw(void);
 	static CEffect *Create(D3DXVECTOR3 pos, TYPE type);
 	static CEffect *Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float fRadius, float fLife, TYPE type);
 	void SetMove(D3DXVECTOR3 move);
-	void SetFusion(FUSION fusion) { m_fusion = fusion; }
+	D3DXVECTOR3 GetPosition(void) { return m_Info.pos; }
+	void SetPosition(const D3DXVECTOR3& pos) { m_Info.pos = pos; }
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
+	void SetType(TYPE type) { m_Info.Type = type; }
+	CObjectBillboard *GetObj(void) { return m_pObjectBilBoard; }
+	float GetRange(void) const;
+	D3DXCOLOR GetCol(void) const;
+	float GetLife(void) const { return m_Info.fLife; }
 
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	void RadiusSet(void);
 	void ColorSet(void);
+	void InfoSet(void);
+	void DrawSet(void);
+	CTexture::TYPE SetTex(TYPE type);
 
 	// メンバ変数
-	int nIdxTexture;	// テクスチャ番号
-	static const D3DXCOLOR m_aColInfo[TYPE_MAX];	// 色の情報
-	static const float m_aRadiusInfo[TYPE_MAX];		// 半径の情報
-	FUSION m_fusion;
 	INFO m_Info;	// 情報の構造体
+	CObjectBillboard *m_pObjectBilBoard;
 };
 
 #endif 

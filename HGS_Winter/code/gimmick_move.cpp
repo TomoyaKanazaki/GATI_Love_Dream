@@ -137,7 +137,7 @@ void CGimmickMove::Update(void)
 		return;
 	}
 
-	CParticle::Create(GetPosition(), GetRotation(), CEffect::TYPE_SHWBULLET);
+	
 }
 
 //==========================================================

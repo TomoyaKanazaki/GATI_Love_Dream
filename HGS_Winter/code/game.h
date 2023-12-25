@@ -22,6 +22,7 @@ class CObject2D;
 class CClient;
 class CMeshDome;
 class CCountDown;
+class CScore;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -61,7 +62,7 @@ public:
 	void SendGoal(void);
 
 	// メンバ関数(ポインタ)
-	CScore *GetScore(void);
+	static CScore *GetScore(void);
 	CTime *GetTime(void);
 	CPlayer *GetPlayer(void);
 	CFileLoad *GetFileLoad(void);
@@ -80,7 +81,6 @@ private:
 	void AddressLoad(char *pAddrss);
 
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
-	CScore *m_pScore;		// スコアのポインタ
 	CTime *m_pTime;		// タイムのポインタ
 	CPlayer *m_pPlayer;	// プレイヤーのポインタ
 	CPause *m_pPause;		// ポーズのポインタ
@@ -89,6 +89,7 @@ private:
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
 	CObject2D *m_pStart;	// スタート時の文字
 	CClient *m_pClient;	// クライアントのポインタ
+	static CScore* m_pScore;		// スコアのポインタ
 	char m_aAddress[30];	// 接続先サーバーのアドレス
 	static STATE m_state;	// 状態
 	int m_nSledCnt;		// 現在動作しているスレッド数

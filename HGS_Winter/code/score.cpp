@@ -19,19 +19,18 @@ namespace
 {
 	const int MAX_SCORE = 99999999; // スコアの最大値
 	const D3DXVECTOR2 NUM_SIZE = D3DXVECTOR2(80.0f, 120.0f); // 数字のサイズ
-	const D3DXVECTOR3 NUM_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - NUM_SIZE.x * (NUM_NUM * 0.5f - 0.5f), SCREEN_HEIGHT * 0.5f, 0.0f); // 数字の位置
+	const D3DXVECTOR3 NUM_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - NUM_SIZE.x * (NUM_NUM * 0.5f - 0.5f), SCREEN_HEIGHT * 0.7f, 0.0f); // 数字の位置
 }
 
 //==========================================
 //  静的メンバ変数宣言
 //==========================================
-CScore* CScore::m_pScore = nullptr; // 自分自身のポインタ
+int CScore::m_ScorePoint = 0; // 自分自身のポインタ
 
 //==========================================
 //  コンストラクタ
 //==========================================
-CScore::CScore(): m_ScorePoint(0),
-m_Create(false)
+CScore::CScore()
 {
 	for (int i = 0; i < NUM_NUM; ++i)
 	{
@@ -52,11 +51,33 @@ CScore::~CScore()
 //==========================================
 void CScore::Init()
 {
+	// リザルトの時だけ数字を出す
+	if (CManager::GetInstance()->GetMode() == CScene::MODE_RESULT)
+	{
+		// テクスチャ座標を算出
+		int nCalc = m_ScorePoint;
+		int nNum[NUM_NUM];
+		for (int i = NUM_NUM - 1; i >= 0; --i)
+		{
+			nNum[i] = nCalc % 10;
+			nCalc /= 10;
+		}
+
+		for (int i = 0; i < NUM_NUM; ++i)
+		{
+			if (m_apNumber[i] == nullptr)
+			{
+				D3DXVECTOR3 pos = NUM_POS;
+				pos.x += NUM_SIZE.x * i + NUM_SIZE.x * 0.5f;
+				m_apNumber[i] = CNumber::Create(pos, NUM_SIZE.x, NUM_SIZE.y);
+				m_apNumber[i]->GetObject2D()->BindTexture(CTexture::TYPE_SCORE);
+				m_apNumber[i]->SetIdx(nNum[i]);
+			}
+		}
+	}
+
 	// スコアを初期化
 	m_ScorePoint = 0;
-
-	// 生成フラグをオフ
-	m_Create = false;
 }
 
 //==========================================
@@ -111,34 +132,6 @@ void CScore::Update()
 
 	// スコア制限
 	LimitScore();
-
-	// リザルトの時だけ数字を出す
-	if (CManager::GetInstance()->GetMode() == CScene::MODE_RESULT && !m_Create)
-	{
-		// テクスチャ座標を算出
-		int nCalc = m_ScorePoint;
-		int nNum[NUM_NUM];
-		for (int i = NUM_NUM - 1; i >= 0; --i)
-		{
-			nNum[i] = nCalc % 10;
-			nCalc /= 10;
-		}
-
-		for (int i = 0; i < NUM_NUM; ++i)
-		{
-			if (m_apNumber[i] == nullptr)
-			{
-				D3DXVECTOR3 pos = NUM_POS;
-				pos.x += NUM_SIZE.x * i + NUM_SIZE.x * 0.5f;
-				m_apNumber[i] = CNumber::Create(pos, NUM_SIZE.x, NUM_SIZE.y);
-				m_apNumber[i]->GetObject2D()->BindTexture(CTexture::TYPE_SCORE);
-				m_apNumber[i]->SetIdx(nNum[i]);
-			}
-		}
-
-		// フラグをオン
-		m_Create = true;
-	}
 }
 
 //==========================================
@@ -166,13 +159,11 @@ void CScore::AddScorePoint(const int AddPoint)
 //==========================================
 CScore* CScore::Create()
 {
-	if (m_pScore == nullptr)
-	{
-		m_pScore = new CScore;
-		m_pScore->Init();
-	}
+	CScore* pScore = new CScore;
 
-	return m_pScore;
+	pScore->Init();
+
+	return pScore;
 }
 
 //==========================================

@@ -167,6 +167,12 @@ void CObject2D::SetVtx(void)
 		0
 	);
 
+	//対角線の長さを算出する
+	m_fLength = sqrtf(m_fWidth * m_fWidth + m_fHeight * m_fHeight) * 0.5f;
+
+	//対角線の角度を算出する
+	m_fAngle = atan2f(m_fWidth, m_fHeight);
+
 	//頂点座標の設定
 	pVtx[0].pos.x = m_pos.x + sinf(m_rot.z + (-D3DX_PI + m_fAngle)) * m_fLength;
 	pVtx[0].pos.y = m_pos.y + cosf(m_rot.z + (-D3DX_PI + m_fAngle)) * m_fLength;
@@ -299,6 +305,44 @@ CObject2D *CObject2D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const
 
 		// 向き設定
 		pObject2D->SetRotation(rot);
+
+		// 頂点情報設定
+		pObject2D->SetVtx();
+
+		// 種類設定
+		pObject2D->SetType(TYPE_NONE);
+	}
+	else
+	{// 生成に失敗した場合
+		return NULL;
+	}
+
+	return pObject2D;
+}
+
+CObject2D* CObject2D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, const int nPriority)
+{
+	CObject2D* pObject2D = NULL;
+
+	// オブジェクト2Dの生成
+	pObject2D = new CObject2D(nPriority);
+
+	if (pObject2D != NULL)
+	{// 生成できた場合
+		// 初期化処理
+		pObject2D->Init();
+
+		// 座標設定
+		pObject2D->SetPosition(pos);
+
+		// 向き設定
+		pObject2D->SetRotation(rot);
+
+		// 大きさ設定
+		pObject2D->SetSize(size.x, size.y);
+
+		// 頂点情報設定
+		pObject2D->SetVtx();
 
 		// 種類設定
 		pObject2D->SetType(TYPE_NONE);

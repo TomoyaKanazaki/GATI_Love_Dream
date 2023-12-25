@@ -14,6 +14,8 @@ class CFileLoad;
 class CMeshDome;
 class CTime;
 class CCharacter;
+class CObject2D;
+class CScore;
 
 #define NUM_RANK	(5)		// ランキングの順位数
 
@@ -61,6 +63,8 @@ private:
 	CTime *m_pTime;			// タイマー
 	CTime *m_apScore[NUM_RANK];	// スコアのポインタ(順位分)
 	CCharacter *m_apCharacter[TYPE_MAX];
+	CObject2D* m_pBG; // 背景
+	CScore* m_pScore;		// スコアのポインタ
 	int m_nRank;				// 今回のランク
 	int m_nTimer;				// 遷移タイマー
 	static int m_nScore;		// 今回のスコア

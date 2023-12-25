@@ -39,6 +39,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_BALLOONPINK,	// ピンクの水風船
 		TYPE_BALLOONBLUE,	// 水色の風船
 		TYPE_HEATHAZE,		// 陽炎
+		TYPE_BG,			// 背景
 		TYPE_MAX
 	}TYPE;
 

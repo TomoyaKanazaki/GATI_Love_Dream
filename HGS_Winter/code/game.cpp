@@ -71,6 +71,7 @@ namespace
 	const float FOG_END = 500.0f; // フォグの最終位置(距離)
 	const float FOG_MOVE = (FOG_START - FOG_END) / GAME_TIME; // 1秒間に近づく距離
 	const D3DXCOLOR FOG_COLOR = D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f); // フォグの色
+	const D3DXVECTOR2 TIME_SIZE = { 400.0f, 30.0f };
 }
 
 //===============================================
@@ -92,7 +93,7 @@ m_FogLength(FOG_START)
 	m_pFileLoad = NULL;
 	m_pEditor = NULL;
 	m_pMeshDome = NULL;
-	m_pStart = NULL;
+	m_pTimer = NULL;
 	m_pPause = NULL;
 	m_pScore = NULL;
 	m_pClient = NULL;
@@ -140,7 +141,7 @@ HRESULT CGame::Init(void)
 	m_pPlayer->SetUp(true);
 	m_pPlayer->SetType(CPlayer::TYPE_ACTIVE);
 	m_pPlayer->BindId(0);
-	//m_pCountDown = CCountDown::Create();
+	m_pCountDown = CCountDown::Create();
 	CNpc::Create(D3DXVECTOR3(-1000.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3000.0f, 10.0f, 10, 10);
@@ -200,6 +201,11 @@ HRESULT CGame::Init(void)
 	{
 		m_pPause = CPause::Create();
 	}
+
+	m_pTimer = CObject2D::Create(6);
+	m_pTimer->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.4f, 0.0f));
+	m_pTimer->SetSize(TIME_SIZE.x, TIME_SIZE.y);
+	m_pTimer->SetCol(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
 
 	// スポットライトをオン
 	//CManager::GetInstance()->GetLight()->EnablePointLight(true);
@@ -294,18 +300,9 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	// ポーズ
-	if (m_pPause != NULL)
-	{
-		m_pPause->Update();
+	if (m_nCountDown > 0) {
 
-		if (m_pPause->GetEnable() == true)
-		{
-			if (m_pPause->GetSelect() == true)
-			{
-				CManager::GetInstance()->GetFade()->Update();
-			}
-			return;
-		}
+		return;
 	}
 
 	if (!m_bEnd)

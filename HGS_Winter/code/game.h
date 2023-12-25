@@ -87,7 +87,7 @@ private:
 	CEditor *m_pEditor;	// エディターのポインタ
 	CMapCamera *m_pMapCamera;		// ミニマップ用カメラ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
-	CObject2D *m_pStart;	// スタート時の文字
+	CObject2D *m_pTimer;	// スタート時の文字
 	CClient *m_pClient;	// クライアントのポインタ
 	static CScore* m_pScore;		// スコアのポインタ
 	char m_aAddress[30];	// 接続先サーバーのアドレス
@@ -98,6 +98,8 @@ private:
 	std::mutex m_mutex;
 	bool m_bEnd;
 	float m_Time; // ゲーム時間
+	float m_fStartCounter;	//
+	int m_nCountDown;
 	float m_FogLength; // フォグの距離
 };
 

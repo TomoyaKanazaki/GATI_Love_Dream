@@ -96,6 +96,8 @@ private:
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;
+	float m_Time; // ゲーム時間
+	float m_FogLength; // フォグの距離
 };
 
 #endif

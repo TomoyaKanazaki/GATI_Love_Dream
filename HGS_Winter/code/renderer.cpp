@@ -11,6 +11,7 @@
 #include "input.h"
 #include "editor.h"
 #include "task_manager.h"
+#include "fog.h"
 
 //===================================================
 // コンストラクタ
@@ -125,6 +126,9 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	m_pD3DDevice->GetRenderTarget(0, &m_pOrgSurface);
 	m_pD3DDevice->GetDepthStencilSurface(&m_pOrgZBuffer);
 
+	// フォグをオフで設定する
+	Fog::Set(false);
+
 	return S_OK;
 }
 
@@ -215,6 +219,9 @@ void CRenderer::Draw(void)
 	// 描画開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{// 描画が成功した場合
+
+		// フォグを描画
+		Fog::Draw();
 
 		// オブジェクトの描画
 		CObject::DrawAll();

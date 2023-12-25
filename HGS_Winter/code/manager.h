@@ -115,11 +115,18 @@ public:	// 誰でもアクセス可能
 	CScene *GetScene(void) { return m_pScene; }
 	static CManager *GetInstance(void);
 	static void Release(void);
+	float GetDeltaTime() { return m_TimeDelta; }
 
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	void DataReset(void);
+	void CalcTimeDelta();
+
+	// メンバ変数
+	float m_TimeOld; // 前回時間
+	float m_TimeCurrent; // 現在時間
+	float m_TimeDelta; // 経過時間
 
 	// 静的メンバ変数
 	CRenderer *m_pRenderer;	// レンダラーのポインタ

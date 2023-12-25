@@ -268,7 +268,7 @@ CMeshField *CMeshField::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot,
 		pMeshField->SetSize(fWidth, fHeight);
 
 		// テクスチャ設定
-		pMeshField->BindTexture(pTexture->Regist(pFileName));
+		//pMeshField->BindTexture(pTexture->Regist(pFileName));
 	}
 
 	return pMeshField;

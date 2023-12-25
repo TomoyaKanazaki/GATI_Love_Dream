@@ -83,6 +83,7 @@ public:	// 誰でもアクセス可能
 	void Damage(int nDamage);
 	void SetLife(int nLife);
 	static int GetNum(void) { return m_nNumCount; }
+	static void Spawn(void);
 
 private:	// 自分だけがアクセス可能
 
@@ -108,6 +109,7 @@ private:	// 自分だけがアクセス可能
 	float m_fRotDest;		// 角度計算
 	float m_fLife;	// 体力
 	static int m_nNumCount;
+	static float m_SpawnCnt;
 };
 
 #endif

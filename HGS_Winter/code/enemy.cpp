@@ -20,7 +20,7 @@ CEnemy *CEnemy::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
 //==========================================
 namespace
 {
-	const float DAMAGE = 0.0075f; // 一回のヒットで受けるダメージ量
+	const float DAMAGE = 0.015f; // 一回のヒットで受けるダメージ量
 }
 
 //==========================================
@@ -176,7 +176,7 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 	if (m_Life < 1.0f)
 	{
 		if (nDamage == 1) {
-			m_Life += DAMAGE;
+			m_Life += DAMAGE * 0.85f;
 
 			if (m_Life > 1.0f) {
 				m_Life = 1.0f;

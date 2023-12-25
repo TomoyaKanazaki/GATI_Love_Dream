@@ -341,6 +341,8 @@ void CGame::Update(void)
 
 	if (!m_bEnd)
 	{
+		CNpc::Spawn();
+
 		// XVˆ—
 		CScene::Update();
 

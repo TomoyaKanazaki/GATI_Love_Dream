@@ -32,7 +32,7 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(0.31f)		// 移動量
+#define MOVE	(0.21f)		// 移動量
 #define SHW_MOVE	(1.0f)	// シャワー中移動量
 #define PLAYER_GRAVITY	(-0.15f)		//プレイヤー重力
 #define PLAYER_JUMP		(10.0f)		//プレイヤージャンプ力
@@ -63,12 +63,15 @@ namespace
 {
 	const float DAMAGE = 0.002f; // 一回のヒットで受けるダメージ量
 	const float RADIUS = 100.0f;
+	const int MAX_SPAWN = 3;
+	const int SPAWN_TIMER = 20;
 }
 
 // 前方宣言
 CNpc *CNpc::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
 CNpc *CNpc::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
 int CNpc::m_nNumCount = 0;
+float CNpc::m_SpawnCnt = 0.0f;
 
 //===============================================
 // コンストラクタ
@@ -371,6 +374,7 @@ void CNpc::Controller(void)
 			}
 
 			float fAdd = moveDiff.x + moveDiff.y + moveDiff.z;
+			fAdd * 1.5f;
 
 			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWNPC, static_cast<int>(fAdd) * 4);
 		}
@@ -662,4 +666,21 @@ bool CNpc::Collision(const D3DXVECTOR3& pos, float fRadius)
 	}
 	
 	return true;
+}
+
+//===============================================
+// 当たり判定
+//===============================================
+void CNpc::Spawn(void)
+{
+	if (m_nNumCount >= MAX_SPAWN) {
+		return;
+	}
+
+	m_SpawnCnt += CManager::GetInstance()->GetDeltaTime();
+	
+	if (m_SpawnCnt >= SPAWN_TIMER) {
+		m_SpawnCnt = 0.0f;
+		CNpc::Create(D3DXVECTOR3(-1000.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
 }

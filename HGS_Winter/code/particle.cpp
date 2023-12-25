@@ -123,7 +123,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			float frand = rand() % 8 * 0.1f;
 
 			//êFÇÃê›íË
-			col = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
+			col = D3DXCOLOR(0.55f, 0.55f, 0.55f, 1.0f);
 
 			//îºåaÇÃê›íË
 			fRadius = 5.0f;

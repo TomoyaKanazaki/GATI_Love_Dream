@@ -22,12 +22,12 @@ public:	// 誰でもアクセス可能
 
 	// メンバ関数
 	static void Create(const D3DXVECTOR3& pos, CEffect::TYPE type);
-	static void Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& move, CEffect::TYPE type);
+	static void Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& move, CEffect::TYPE type, int nNum = 0);
 
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
-	static void Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffect::TYPE type);
+	static void Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffect::TYPE type, int nNum);
 };
 
 #endif

@@ -18,7 +18,7 @@
 //==========================================================
 #define CAMERA_MOVESPEED	(1.0f)			// 移動量
 #define CAMERA_LENGTHMOVE	(1.0f)			// カメラ距離移動量
-#define ROTATE_SPEED		(0.03f)			// カメラの回転速度
+#define ROTATE_SPEED		(0.015f)			// カメラの回転速度
 #define PAD_ROTATE			(0.02f)
 #define CAMERA_MAXLENGTH	(5000.0f)		// カメラ最大距離
 #define CAMERA_MINLENGTH	(300.0f)		// カメラ最小距離
@@ -162,6 +162,61 @@ void CCamera::SetCamera(void)
 
 	//ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
+}
+
+//==========================================================
+// 回転操作
+//==========================================================
+void CCamera::Rotate(void)
+{
+	CInputKeyboard *pKey = CManager::GetInstance()->GetInputKeyboard();
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();	// キーボードのポインタ
+	float fMultiSlow = 1.0f;
+
+	//x軸の移動
+	if (pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, 0) == true)
+	{//Qキー入力
+		m_rot.y += -D3DX_PI * ROTATE_SPEED * fMultiSlow;
+		if (m_rot.y < -D3DX_PI)
+		{//角度がΠを超えた場合
+			m_rot.y += D3DX_PI * 2;
+		}
+	}
+	else if (pInputPad->GetPress(CInputPad::BUTTON_RIGHTBUTTON, 0) == true)
+	{//Eキー入力
+		m_rot.y += D3DX_PI * ROTATE_SPEED * fMultiSlow;
+
+		if (m_rot.y > D3DX_PI)
+		{//角度がΠを超えた場合
+			m_rot.y += -D3DX_PI * 2;
+		}
+	}
+
+	//x軸の移動
+	if ((pKey->GetPress(DIK_J) == true && pKey->GetPress(DIK_L) != true))
+	{//Qキー入力
+		m_rot.y += -D3DX_PI * ROTATE_SPEED;
+		if (m_rot.y < -D3DX_PI)
+		{//角度がΠを超えた場合
+			m_rot.y += D3DX_PI * 2;
+		}
+	}
+	else if ((pKey->GetPress(DIK_L) == true && pKey->GetPress(DIK_J) != true))
+	{//Eキー入力
+		m_rot.y += D3DX_PI * ROTATE_SPEED;
+		if (m_rot.y > D3DX_PI)
+		{//角度がΠを超えた場合
+			m_rot.y += -D3DX_PI * 2;
+		}
+	}
+
+	if (m_mode == MODE_SLOWGUN)
+	{
+		Slow();
+	}
+
+	//視点設定
+	SetV();
 }
 
 //==========================================================

@@ -7,13 +7,15 @@
 #include "enemy.h"
 #include "Xfile.h"
 #include "manager.h"
+#include "debugproc.h"
+#include "score.h"
 
 //==========================================
 //  定数定義
 //==========================================
 namespace
 {
-	const float DAMAGE = 0.001f; // 一回のヒットで受けるダメージ量
+	const float DAMAGE = 0.005f; // 一回のヒットで受けるダメージ量
 }
 
 //==========================================
@@ -92,6 +94,9 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 
 		// 読み込み確認
 		pEnemy->BindFile(pModelFile->Regist(pFileName));
+
+		// 変更後マテリアルカラーの初期化
+		pEnemy->ResetMaterial(pFileName);
 	}
 	else
 	{// 生成に失敗した場合
@@ -106,15 +111,50 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 //==========================================
 bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
 {
+	// ヒット判定を取得
+	if (!CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax))
+	{
+		return false;
+	}
+
 	// ダメージを受ける
 	if (m_Life < 1.0f)
 	{
 		m_Life += DAMAGE;
+
+		// 現在のマテリアルカラーを取得
+		D3DMATERIAL9 material = GetMaterial();
+
+		// カラーをライフと比較する
+		if (material.Diffuse.r < m_Life)
+		{
+			material.Diffuse.r = m_Life;
+
+			// スコアを加算する
+			CManager::GetInstance()->GetScore()->AddScorePoint();
+		}
+		if (material.Diffuse.g < m_Life)
+		{
+			material.Diffuse.g = m_Life;
+
+			// スコアを加算する
+			CManager::GetInstance()->GetScore()->AddScorePoint();
+		}
+		if (material.Diffuse.b < m_Life)
+		{
+			material.Diffuse.b = m_Life;
+
+			// スコアを加算する
+			CManager::GetInstance()->GetScore()->AddScorePoint();
+		}
+
+		// マテリアルカラーを設定
+		SetMaterial(material);
+
+		// マテリアル変更フラグをオンにする
+		ChangeCol(true);
 	}
 
-	/*
-	ここで色を変える
-	*/
-
-	return CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax);
+	// ヒットで返す
+	return true;
 }

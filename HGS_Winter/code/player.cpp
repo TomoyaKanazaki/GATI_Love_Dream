@@ -85,7 +85,6 @@ CPlayer::CPlayer()
 	m_pObject = NULL;
 	m_pShadow = NULL;
 	m_nLife = 0;
-	m_ppBillBoard = NULL;
 	m_type = TYPE_NONE;
 	m_nId = -1;
 	m_fEffectCount = 0.0f;
@@ -136,30 +135,12 @@ HRESULT CPlayer::Init(void)
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxRot);
 
-	if (m_ppBillBoard == nullptr)
-	{
-		m_ppBillBoard = new CObjectBillboard*[START_LIFE];
-
-		for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-		{
-			m_ppBillBoard[nCnt] = nullptr;
-
-			if (nullptr == m_ppBillBoard[nCnt])
-			{
-				m_ppBillBoard[nCnt] = CObjectBillboard::Create(m_Info.pos, 5);
-				m_ppBillBoard[nCnt]->SetRotation(D3DXVECTOR3(0.0f, 0.0f, D3DXToRadian(rand() % 628 - 314)));
-				m_ppBillBoard[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\balloon.png"));
-				m_ppBillBoard[nCnt]->SetSize(90.0f + nCnt * 5.0f, 90.0f + nCnt * 5.0f);
-			}
-		}
-	}
-
 	// 影の生成
 	if (nullptr == m_pShadow)
 	{
 		m_pShadow = CShadow::Create(m_Info.pos, 50.0f, 50.0f);
-		m_pShadow->SetpVtx(m_ppBillBoard[m_nLife - 1]->GetWidth(), m_ppBillBoard[m_nLife - 1]->GetHeight());
-		m_pShadow->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, (float)((float)m_nLife / (float)START_LIFE * SHADOW_ALPHA)));
+		m_pShadow->SetpVtx(100.0f, 100.0f);
+		m_pShadow->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	m_pObject->SetDraw();
@@ -219,21 +200,6 @@ void CPlayer::Uninit(void)
 	if (nullptr != m_pShadow){
 		m_pShadow->Uninit();
 		m_pShadow = NULL;
-	}
-
-	if (m_ppBillBoard != NULL)
-	{
-		for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-		{
-			if (nullptr != m_ppBillBoard[nCnt])
-			{
-				m_ppBillBoard[nCnt]->Uninit();
-				m_ppBillBoard[nCnt] = NULL;
-			}
-		}
-
-		delete[] m_ppBillBoard;	// ポインタの開放
-		m_ppBillBoard = NULL;	// 使用していない状態にする
 	}
 
 	if (m_pObject != NULL)
@@ -311,13 +277,6 @@ void CPlayer::Update(void)
 	{
 		if (m_nLife <= 0)
 		{
-			for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-			{
-				if (nullptr != m_ppBillBoard[nCnt]) {
-					m_ppBillBoard[nCnt]->SetPosition(D3DXVECTOR3(m_Info.pos.x, m_Info.pos.y + 50.0f + 10.0f * nCnt, m_Info.pos.z));
-				}
-			}
-
 			return;
 		}
 
@@ -461,6 +420,7 @@ void CPlayer::Controller(void)
 		}
 
 		Rotation();	// 回転
+		RotateCamera();	// カメラ回転
 	}
 
 	pos = GetPosition();	// 座標を取得
@@ -475,13 +435,8 @@ void CPlayer::Controller(void)
 	// オブジェクトとの当たり判定
 	if (nullptr != m_pObject)
 	{
-		D3DXVECTOR3 vtxMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-		if (m_ppBillBoard != nullptr){
-			vtxMax = D3DXVECTOR3(m_ppBillBoard[0]->GetWidth() * 0.7f, m_ppBillBoard[0]->GetHeight(), m_ppBillBoard[0]->GetHeight() * 0.7f);
-			vtxMin = vtxMax * -1.0f;
-		}
+		D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
+		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -50.0f, -50.0f);
 
 		// ギミック
 		if (CGimmick::Collision(pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, nDamage))
@@ -831,34 +786,11 @@ void CPlayer::StateSet(void)
 
 		CManager::GetInstance()->GetDebugProc()->Print("状態 : [ダメージ]\n");
 
-		if (m_ppBillBoard != NULL)
-		{
-			if (m_nLife >= 0 && m_nLife < START_LIFE)
-			{
-				m_ppBillBoard[m_nLife]->SetSize(m_ppBillBoard[m_nLife]->GetWidth() + 11.0f, m_ppBillBoard[m_nLife]->GetHeight() + 11.0f);
-			}
-		}
-
 		m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
 		if (m_Info.fStateCounter <= 0.0f)
 		{
 			m_Info.fStateCounter = DAMAGE_APPEAR;
 			m_Info.state = STATE_APPEAR;
-
-			if (m_ppBillBoard != NULL)
-			{
-				if (m_nLife >= 0 && m_nLife < START_LIFE)
-				{
-					m_ppBillBoard[m_nLife]->SetDraw(false);
-				}
-			}
-
-			if (m_pShadow != nullptr)
-			{
-				m_pShadow->SetpVtx(m_ppBillBoard[m_nLife - 1]->GetWidth(), m_ppBillBoard[m_nLife - 1]->GetHeight());
-				m_pShadow->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, (float)((float)m_nLife / (float)START_LIFE * SHADOW_ALPHA)));
-
-			}
 		}
 
 		break;
@@ -867,27 +799,9 @@ void CPlayer::StateSet(void)
 
 		CManager::GetInstance()->GetDebugProc()->Print("状態 : [死亡]\n");
 
-		if (m_ppBillBoard != NULL)
-		{
-			if (m_nLife >= 0 && m_nLife < START_LIFE)
-			{
-				m_ppBillBoard[m_nLife]->SetSize(m_ppBillBoard[m_nLife]->GetWidth() + 50.0f, m_ppBillBoard[m_nLife]->GetHeight() + 50.0f);
-			}
-		}
-
 		{
 			float fOld = m_Info.fStateCounter;
 			m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
-			if (m_Info.fStateCounter <= DEATH_INTERVAL * 0.95f && fOld >= DEATH_INTERVAL * 0.95f)
-			{
-				if (m_ppBillBoard != NULL)
-				{
-					if (m_nLife >= 0 && m_nLife < START_LIFE)
-					{
-						m_ppBillBoard[m_nLife]->SetDraw(false);
-					}
-				}
-			}
 		}
 
 		if (m_Info.fStateCounter <= 0.0f)
@@ -905,15 +819,6 @@ void CPlayer::StateSet(void)
 			{
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SPAWN);
 			}
-
-			for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-			{
-				if (nullptr != m_ppBillBoard[nCnt])
-				{
-					m_ppBillBoard[nCnt]->SetDraw(true);
-					m_ppBillBoard[nCnt]->SetSize(0.0f, 0.0f);
-				}
-			}
 		}
 
 		break;
@@ -925,26 +830,11 @@ void CPlayer::StateSet(void)
 		m_Info.pos.y += 10.0f;
 		SetPosition(m_Info.pos);
 
-		for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-		{
-			if (nullptr != m_ppBillBoard[nCnt])
-			{
-				m_ppBillBoard[nCnt]->SetSize(m_ppBillBoard[nCnt]->GetWidth() + 1.0f + nCnt * 0.25f, m_ppBillBoard[nCnt]->GetHeight() + 1.0f + nCnt * 0.25f);
-			}
-		}
-
 		m_pShadow->SetpVtx(m_pShadow->GetWidth() + 1.0f + START_LIFE * 0.25f, m_pShadow->GetHeight() + 1.0f + START_LIFE * 0.25f);
 		m_pShadow->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, (float)((float)(SPAWN_INTERVAL - m_Info.fStateCounter) / (float)SPAWN_INTERVAL * SHADOW_ALPHA)));
 
 		if (m_Info.fStateCounter <= 0.0f)
 		{
-			for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-			{
-				if (nullptr != m_ppBillBoard[nCnt])
-				{
-					m_ppBillBoard[nCnt]->SetSize(90.0f + nCnt * 5.0f, 90.0f + nCnt * 5.0f);
-				}
-			}
 
 			m_pObject->SetDraw();
 			m_Info.fStateCounter = 0.0f;
@@ -961,7 +851,7 @@ void CPlayer::StateSet(void)
 //===============================================
 void CPlayer::Damage(int nDamage) 
 { 
-	int nOldLife = m_nLife;
+	/*int nOldLife = m_nLife;
 	m_nLife -= nDamage;
 
 	if (m_nLife < 0)
@@ -969,22 +859,11 @@ void CPlayer::Damage(int nDamage)
 		m_nLife = 0;
 	}
 
-	for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-	{
-		if (nullptr != m_ppBillBoard)
-		{
-			if (nCnt > m_nLife)
-			{
-				m_ppBillBoard[nCnt]->SetDraw(false);
-			}
-		}
-	}
-
 	if (m_nLife != nOldLife)
 	{
 		m_Info.fStateCounter = DAMAGE_INTERVAL;
 		m_Info.state = STATE_DAMAGE;
-	}
+	}*/
 }
 
 //===============================================
@@ -997,17 +876,6 @@ void CPlayer::SetLife(int nLife)
 	if (m_nLife < 0)
 	{
 		m_nLife = 0;
-	}
-
-	for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-	{
-		if (nullptr != m_ppBillBoard)
-		{
-			if (nCnt > m_nLife)
-			{
-				m_ppBillBoard[nCnt]->SetDraw(false);
-			}
-		}
 	}
 }
 
@@ -1064,4 +932,12 @@ void CPlayer::SetGoal(bool bValue)
 			}
 		}
 	}
+}
+
+//===============================================
+// カメラ操作
+//===============================================
+void CPlayer::RotateCamera(void)
+{
+	CManager::GetInstance()->GetCamera()->Rotate();
 }

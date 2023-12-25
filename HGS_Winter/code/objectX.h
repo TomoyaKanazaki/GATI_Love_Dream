@@ -54,6 +54,7 @@ protected:
 
 	// メンバ関数
 	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax);
+	void ResetMaterial(const char* pFileName); // 変更後マテリアルの初期化
 
 private:	// 自分だけがアクセス可能
 	

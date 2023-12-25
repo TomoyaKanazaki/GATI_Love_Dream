@@ -14,6 +14,7 @@
 #include "Xfile.h"
 #include "objectX.h"
 #include "game.h"
+#include "enemy.h"
 
 //==========================================================
 // マクロ定義
@@ -506,7 +507,7 @@ void CFileLoad::LoadModelData(FILE *pFile)
 	}
 
 	//フィールドの配置
-	CObjectX::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx));
+	CEnemy::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx));
 }
 
 //==========================================================

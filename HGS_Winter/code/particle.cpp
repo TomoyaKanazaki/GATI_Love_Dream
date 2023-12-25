@@ -76,7 +76,6 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_SNOWATK:	// ‰Œ
 	{
-		
 		float fTanf = atan2f(Defmove.x, Defmove.z);
 		for (int nCnt = 0; nCnt < nNum; nCnt++)
 		{
@@ -84,17 +83,17 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			pos = Defpos;
 
 			//ˆÚ“®—Ê‚ÌÝ’è
-			move.x = sinf((float)(rand() % 141 - 70) * 0.01f + fTanf) * ((float)(rand() % 100)) * 1.0f;
+			move.x = sinf((float)(rand() % 141 - 70) * 0.01f + fTanf) * ((float)(rand() % 100)) * 0.5f;
 			move.y = ((float)(rand() % 3 + 1)) * 3.0f;
-			move.z = cosf((float)(rand() % 141 - 70) * 0.01f + fTanf) * ((float)(rand() % 100)) * 1.0f;
+			move.z = cosf((float)(rand() % 141 - 70) * 0.01f + fTanf) * ((float)(rand() % 100)) * 0.5f;
 
 			float frand = rand() % 8 * 0.1f;
 
 			//F‚ÌÝ’è
-			col = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+			col = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
 
 			//”¼Œa‚ÌÝ’è
-			fRadius = 40.0f;
+			fRadius = 10.0f;
 
 			//Žõ–½‚ÌÝ’è
 			fLife = 500.0f;

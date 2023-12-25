@@ -14,6 +14,7 @@
 #include "game.h"
 #include "meshfield.h"
 #include "billboard.h"
+#include "objectX.h"
 
 //===============================================
 // –³–¼–¼‘O‹óŠÔ
@@ -92,6 +93,7 @@ void CEffect::Uninit(void)
 void CEffect::Update(void)
 {
 	m_Info.fLife -= CManager::GetInstance()->GetSlow()->Get();
+	m_Info.posOld = m_Info.pos;
 	D3DXVECTOR3 nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	if (m_Info.fLife < 0)
@@ -123,7 +125,8 @@ void CEffect::Update(void)
 
 		if (!m_bHit) {	// “–‚½‚Á‚Ä‚¢‚È‚¢ê‡
 			// ”»’è‚ðŽæ‚é
-			{	// “–‚½‚Á‚½
+			D3DXVECTOR3 vtx = { m_Info.fRadius, m_Info.fRadius, m_Info.fRadius };
+			if(CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, -vtx, vtx)){	// “–‚½‚Á‚½
 				m_bHit = true;
 			}
 		}

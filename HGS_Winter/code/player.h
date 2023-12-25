@@ -89,6 +89,7 @@ public:	// 誰でもアクセス可能
 	void SetGoalValue(bool bValue) { m_bGoal = bValue; }
 	void SetUp(bool bValue) { m_bSetUp = bValue; }
 	void SetGoal(bool bValue);
+	void RotateCamera(void);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -118,7 +119,6 @@ private:	// 自分だけがアクセス可能
 	static CPlayer *m_pCur;	// 最後尾のオブジェクトへのポインタ
 	CPlayer *m_pPrev;	// 前のオブジェクトへのポインタ
 	CPlayer *m_pNext;	// 次のオブジェクトへのポインタ
-	CObjectBillboard **m_ppBillBoard;
 	SInfo m_Info;			// 自分自身の情報
 	CCharacter *m_pObject;	// 描画オブジェクト
 	float m_fRotMove;		// 現在の角度

@@ -446,6 +446,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 pos = GetPosition();	// 座標を取得
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	CCamera *pCamera = CManager::GetInstance()->GetCamera();					// カメラのポインタ
+	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();	// キーボードのポインタ
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();								// カメラの角度
 	bool bDamage = false;
@@ -454,10 +455,11 @@ void CPlayer::Controller(void)
 
 	// 操作処理
 	{
-		if (pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == false)
+		if (pInputKey->GetPress(DIK_SPACE) == false && pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == false)
 		{
 			Move();		// 移動
 		}
+
 		Rotation();	// 回転
 	}
 
@@ -520,7 +522,7 @@ void CPlayer::Controller(void)
 
 	{
 		float fIner = INER;
-		if (pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == true)
+		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == true)
 		{
 			fIner = STOP_INER;
 		}

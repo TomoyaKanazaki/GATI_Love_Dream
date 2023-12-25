@@ -75,10 +75,18 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//初期化処理
 	if (m_pRenderer != NULL)
 	{// 使用している場合
+#if _DEBUG
 		if (FAILED(m_pRenderer->Init(hWnd, TRUE)))
 		{//初期化が失敗した場合
 			return E_FAIL;
+	}
+#else NDEBUG
+		if (FAILED(m_pRenderer->Init(hWnd, FALSE)))
+		{//初期化が失敗した場合
+			return E_FAIL;
 		}
+#endif
+		
 	}
 
 	// 入力デバイス(キーボード)の生成
@@ -212,7 +220,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// モードの生成
-	SetMode(CScene::MODE_GAME);
+	SetMode(CScene::MODE_TITLE);
 
 	//　経過時間計測
 	CalcTimeDelta();

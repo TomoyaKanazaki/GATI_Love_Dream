@@ -82,7 +82,7 @@ HRESULT CTitle::Init(void)
 	{
 		CManager::GetInstance()->GetCamera()->SetLength(1000.0f);
 		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, 0.0f, TITLE_CAMROTZ));
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(800.0f, 100.0f, -100.0f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);

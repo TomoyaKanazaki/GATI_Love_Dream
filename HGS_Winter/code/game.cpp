@@ -66,7 +66,7 @@
 //==========================================
 namespace
 {
-	const float GAME_TIME = 120.0f; // ゲームの制限時間
+	const float GAME_TIME = 60.0f; // ゲームの制限時間
 	const float FOG_START = 8000.0f; // フォグの初期位置(距離)
 	const float FOG_TARGET = 500.0f; // フォグの初期位置(距離)
 	const float FOG_END = 0.0f; // フォグの最終位置(距離)

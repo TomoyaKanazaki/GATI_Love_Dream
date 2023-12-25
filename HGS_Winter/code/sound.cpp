@@ -21,6 +21,9 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/dash.wav", 0 },			// 移動音
 	{ "data/SE/damage.wav", 0 },		// ジャンプ音
 	{ "data/SE/spawn.wav", 0 },		// 着地音
+	{ "data/SE/ski.wav", 0 },		// 着地音
+	{ "data/SE/death.wav", 0 },		// 着地音
+	{ "data/SE/slide.wav", 0 },		// 着地音
 };										
 
 //=============================================================================

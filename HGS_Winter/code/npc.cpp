@@ -661,7 +661,9 @@ bool CNpc::Collision(const D3DXVECTOR3& pos, float fRadius)
 
 	m_fLife += DAMAGE;
 
-	if (m_fLife >= 1.0f) {
+	if (m_fLife >= 1.0f)
+	{
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SKI);
 		Uninit();
 	}
 	

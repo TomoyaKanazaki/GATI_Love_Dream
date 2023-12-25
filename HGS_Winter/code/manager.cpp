@@ -33,7 +33,7 @@ CManager *CManager::m_pManager = NULL;
 //===================================================
 // コンストラクタ
 //===================================================
-CManager::CManager() : m_pScore(nullptr),
+CManager::CManager():
 	m_TimeCurrent(0.0f),
 	m_TimeOld(0.0f),
 	m_TimeDelta(0.0f)
@@ -211,12 +211,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		m_pSlow->Init();
 	}
 
-	// スコアの生成
-	if (m_pScore == nullptr)
-	{
-		m_pScore = CScore::Create();
-	}
-
 	// モードの生成
 	SetMode(CScene::MODE_GAME);
 
@@ -329,13 +323,6 @@ void CManager::Uninit(void)
 
 		m_pModelFile = NULL;	// 使用していない状態にする
 	}
-
-	// スコアの終了
-	if (m_pScore != nullptr)
-	{
-		m_pScore->Uninit();
-		m_pScore = nullptr;
-	}
 }
 
 //===================================================
@@ -373,12 +360,6 @@ void CManager::Update(void)
 	if (m_pScene != NULL)
 	{
 		m_pScene->Update();
-	}
-
-	// スコアの終了
-	if (m_pScore != nullptr)
-	{
-		m_pScore->Update();
 	}
 
 	// 経過時間を算出

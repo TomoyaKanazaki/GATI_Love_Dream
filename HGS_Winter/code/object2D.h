@@ -31,7 +31,8 @@ public:	// 誰でもアクセス可能
 	virtual void Uninit(void);
 	virtual void Update(void);
 	virtual void Draw(void);
-	static CObject2D *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const int nPriority = 3);
+	static CObject2D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const int nPriority = 3);
+	static CObject2D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, const int nPriority = 3);
 	static CObject2D *Create(const int nPriority = 3);
 	void BindTexture(int nIdx);
 

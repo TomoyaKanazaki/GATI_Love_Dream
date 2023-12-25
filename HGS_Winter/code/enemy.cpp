@@ -9,6 +9,7 @@
 #include "manager.h"
 #include "debugproc.h"
 #include "score.h"
+#include "game.h"
 
 // 静的メンバ変数宣言
 CEnemy *CEnemy::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -146,21 +147,21 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 			material.Diffuse.r = m_Life;
 
 			// スコアを加算する
-			CManager::GetInstance()->GetScore()->AddScorePoint();
+			CGame::GetScore()->AddScorePoint();
 		}
 		if (material.Diffuse.g < m_Life)
 		{
 			material.Diffuse.g = m_Life;
 
 			// スコアを加算する
-			CManager::GetInstance()->GetScore()->AddScorePoint();
+			CGame::GetScore()->AddScorePoint();
 		}
 		if (material.Diffuse.b < m_Life)
 		{
 			material.Diffuse.b = m_Life;
 
 			// スコアを加算する
-			CManager::GetInstance()->GetScore()->AddScorePoint();
+			CGame::GetScore()->AddScorePoint();
 		}
 
 		// マテリアルカラーを設定

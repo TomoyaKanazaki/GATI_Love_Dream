@@ -36,6 +36,7 @@
 #include "protocol_online.h"
 #include "object2D.h"
 #include "fog.h"
+#include "score.h"
 
 // グローバル
 
@@ -75,6 +76,7 @@ namespace
 // 静的メンバ変数
 //===============================================
 CGame::STATE CGame::m_state = CGame::STATE_TIMEATTACK;	// 状態
+CScore* CGame::m_pScore = nullptr;	// 状態
 
 //===============================================
 // コンストラクタ
@@ -200,6 +202,9 @@ HRESULT CGame::Init(void)
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
+	// スコアを初期化
+	m_pScore = CScore::Create();
+
 	// フォグを設定
 	m_FogLength = FOG_START;
 	Fog::Set(true); // フォグをオン!!
@@ -269,6 +274,12 @@ void CGame::Uninit(void)
 	//Winsock終了処理
 	WSACleanup();	// WSACleanup関数 : winsockの終了処理
 
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Uninit();
+		m_pScore = nullptr;
+	}
+
 	// フォグを設定
 	Fog::Set(false); // フォグをオフ!!
 }
@@ -320,6 +331,11 @@ void CGame::Update(void)
 		// フォグを寄せる
 		m_FogLength -= FOG_MOVE * CManager::GetInstance()->GetDeltaTime();
 		Fog::SetEnd(m_FogLength); // フォグの最大距離を設定
+
+		if (m_pScore != nullptr)
+		{
+			m_pScore->Update();
+		}
 
 		// 時間制限
 		if (m_Time >= GAME_TIME)

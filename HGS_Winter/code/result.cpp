@@ -21,6 +21,7 @@
 #include "character.h"
 #include "motion.h"
 #include "camera.h"
+#include "score.h"
 
 // マクロ定義
 #define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
@@ -33,7 +34,7 @@ CResult::TYPE CResult::m_type = CResult::TYPE_MAX;
 //===============================================
 // コンストラクタ
 //===============================================
-CResult::CResult()
+CResult::CResult() : m_pBG(nullptr)
 {
 	m_pMeshSky = NULL;
 	m_nTimer = 0;
@@ -59,6 +60,12 @@ CResult::~CResult()
 HRESULT CResult::Init(void)
 {
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RESULT);
+
+	// 背景生成
+	m_pBG = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
+	m_pBG->BindTexture(CTexture::TYPE_BG);
+
+	m_pScore = CScore::Create();
 
 	return S_OK;
 }
@@ -95,6 +102,12 @@ void CResult::Uninit(void)
 		m_pTime = NULL;
 	}
 
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Uninit();
+		m_pScore = nullptr;
+	}
+
 	m_type = TYPE_MAX;
 	m_nScore = 0;
 }
@@ -118,6 +131,11 @@ void CResult::Update(void)
 		|| CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_TITLE);
+	}
+
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Update();
 	}
 
 	CScene::Update();

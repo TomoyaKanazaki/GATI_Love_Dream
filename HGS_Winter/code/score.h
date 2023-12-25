@@ -42,12 +42,10 @@ private:
 	void LimitScore(); // スコアの制限
 
 	// メンバ変数
-	int m_ScorePoint; // 現在のスコア
 	CNumber* m_apNumber[NUM_NUM]; // 数字のポインタ
-	bool m_Create;
 
 	// 静的メンバ変数
-	static CScore* m_pScore; // 自分自身のポインタ
+	static int m_ScorePoint; // 現在のスコア
 
 };
 

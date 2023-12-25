@@ -64,9 +64,11 @@
 //==========================================
 namespace
 {
-	const float FOG_START = 1000.0f; // フォグの初期位置(距離)
-	const float FOG_END = 100.0f; // フォグの最終位置(距離)
-	const D3DXCOLOR FOG_COLOR = D3DXCOLOR(0.9f, 0.9f, 0.9f, 0.5f); // フォグの色
+	const float GAME_TIME = 120.0f; // ゲームの制限時間
+	const float FOG_START = 5000.0f; // フォグの初期位置(距離)
+	const float FOG_END = 10.0f; // フォグの最終位置(距離)
+	const float FOG_MOVE = (FOG_START - FOG_END) / GAME_TIME; // 1秒間に近づく距離
+	const D3DXCOLOR FOG_COLOR = D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f); // フォグの色
 }
 
 //===============================================
@@ -77,7 +79,8 @@ CGame::STATE CGame::m_state = CGame::STATE_TIMEATTACK;	// 状態
 //===============================================
 // コンストラクタ
 //===============================================
-CGame::CGame()
+CGame::CGame() : m_Time(0.0f),
+m_FogLength(FOG_START)
 {
 	// 値のクリア
 	m_pMapCamera = NULL;
@@ -198,10 +201,14 @@ HRESULT CGame::Init(void)
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
 	// フォグを設定
+	m_FogLength = FOG_START;
 	Fog::Set(true); // フォグをオン!!
 	Fog::SetCol(FOG_COLOR); // フォグの色を設定
-	Fog::SetEnd(FOG_START); // フォグの最大距離を設定
-	Fog::SetStart(FOG_START); // フォグの最大距離を設定
+	Fog::SetEnd(m_FogLength); // フォグの最大距離を設定
+	Fog::SetStart(FOG_END); // フォグの最大距離を設定
+
+	// 経過時間を設定
+	m_Time = 0.0f;
 
 	return S_OK;
 }
@@ -290,6 +297,23 @@ void CGame::Update(void)
 	{
 		// 更新処理
 		CScene::Update();
+
+#ifdef _DEBUG
+		CManager::GetInstance()->GetDebugProc()->Print
+		(
+			"経過時間 : %f\n"
+			"ゲーム時間 : %f\n",
+			CManager::GetInstance()->GetDeltaTime(),
+			m_Time
+		);
+#endif
+
+		// 経過時間を加算
+		m_Time += CManager::GetInstance()->GetDeltaTime();
+
+		// フォグを寄せる
+		m_FogLength -= FOG_MOVE * CManager::GetInstance()->GetDeltaTime();
+		Fog::SetEnd(m_FogLength); // フォグの最大距離を設定
 	}
 	else
 	{

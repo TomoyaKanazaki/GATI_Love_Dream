@@ -33,7 +33,10 @@ CManager *CManager::m_pManager = NULL;
 //===================================================
 // コンストラクタ
 //===================================================
-CManager::CManager() : m_pScore(nullptr)
+CManager::CManager() : m_pScore(nullptr),
+	m_TimeCurrent(0.0f),
+	m_TimeOld(0.0f),
+	m_TimeDelta(0.0f)
 {
 	m_pRenderer = NULL;			// レンダラーのポインタ
 	m_pInputKeyboard = NULL;	// 入力デバイス(キーボード)へのポインタ
@@ -217,6 +220,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// モードの生成
 	SetMode(CScene::MODE_GAME);
 
+	//　経過時間計測
+	CalcTimeDelta();
+
 	return S_OK;
 }
 
@@ -337,6 +343,9 @@ void CManager::Uninit(void)
 //===================================================
 void CManager::Update(void)
 {
+	// 経過時間を算出
+	CalcTimeDelta();
+
 	// デバッグ表示の更新処理
 	if (m_pDebugProc != NULL)
 	{// 使用している場合
@@ -371,6 +380,9 @@ void CManager::Update(void)
 	{
 		m_pScore->Update();
 	}
+
+	// 経過時間を算出
+	CalcTimeDelta();
 }
 
 //===================================================
@@ -562,6 +574,21 @@ void CManager::DataReset(void)
 
 	// タスクマネージャーの更新
 	CTaskManager::GetInstance()->Init();
+}
+
+//==========================================
+//  経過時間の計測
+//==========================================
+void CManager::CalcTimeDelta()
+{
+	// 現在時間を取得
+	m_TimeCurrent = timeGetTime();
+
+	// 経過時間を算出
+	m_TimeDelta = (m_TimeCurrent - m_TimeOld) * 0.001f;
+
+	// 現在時間を前回時間に保存
+	m_TimeOld = m_TimeCurrent;
 }
 
 //===================================================

@@ -220,11 +220,11 @@ void CRenderer::Draw(void)
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{// 描画が成功した場合
 
-		// オブジェクトの描画
-		CObject::DrawAll();
-
 		// フォグを描画
 		Fog::Draw();
+
+		// オブジェクトの描画
+		CObject::DrawAll();
 
 #if _DEBUG	// デバッグ時
 

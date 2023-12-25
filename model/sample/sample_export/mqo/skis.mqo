@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 21.3581 41.9221 5960.4663
+	pos 21.3581 41.9221 1455.1919
 	lookat 0.0000 0.0000 0.0000
-	head -19.3841
-	pich 0.3608
+	head -20.5041
+	pich 0.3708
 	bank 0.0000
 	ortho 0
-	zoom2 1.2583
+	zoom2 5.1540
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -22,7 +22,7 @@ Material 2 {
 	"mat2" col(1.000 1.000 0.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
 Object "waist" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -48,7 +48,7 @@ Object "waist" {
 	}
 }
 Object "body" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -74,7 +74,7 @@ Object "body" {
 	}
 }
 Object "head" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -100,7 +100,7 @@ Object "head" {
 	}
 }
 Object "leftshoulder" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -126,7 +126,7 @@ Object "leftshoulder" {
 	}
 }
 Object "rightshoulder" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -152,7 +152,7 @@ Object "rightshoulder" {
 	}
 }
 Object "leftupperarm" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -178,7 +178,7 @@ Object "leftupperarm" {
 	}
 }
 Object "rightupperarm" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -204,7 +204,7 @@ Object "rightupperarm" {
 	}
 }
 Object "leftforearm" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -230,7 +230,7 @@ Object "leftforearm" {
 	}
 }
 Object "rightforearm" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -256,7 +256,7 @@ Object "rightforearm" {
 	}
 }
 Object "lefthand" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -378,7 +378,7 @@ Object "lefthand" {
 	}
 }
 Object "righthand" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -500,7 +500,7 @@ Object "righthand" {
 	}
 }
 Object "leftthigh" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -526,7 +526,7 @@ Object "leftthigh" {
 	}
 }
 Object "rightthigh" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -552,7 +552,7 @@ Object "rightthigh" {
 	}
 }
 Object "leftcalf" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -578,7 +578,7 @@ Object "leftcalf" {
 	}
 }
 Object "rightcalf" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -604,7 +604,7 @@ Object "rightcalf" {
 	}
 }
 Object "leftleg" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -630,7 +630,7 @@ Object "leftleg" {
 	}
 }
 Object "rightleg" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -656,7 +656,7 @@ Object "rightleg" {
 	}
 }
 Object "obj1" {
-	visible 15
+	visible 0
 	locking 1
 	shading 1
 	facet 59.5
@@ -887,30 +887,30 @@ Object "obj2" {
 	color 0.898 0.498 0.698
 	color_type 0
 	vertex 24 {
-		6.6478 11.7393 269.6051
-		6.6478 6.0640 269.6051
-		63.3694 11.7393 269.6051
-		63.3694 2.2088 217.7615
-		63.3694 2.2088 165.9178
-		63.3694 2.2088 114.0742
-		63.3694 2.2088 62.2306
-		63.3694 6.0640 269.6051
-		63.3694 -3.4665 217.7615
-		63.3694 -3.4665 165.9178
-		63.3694 -3.4665 114.0742
-		63.3694 -3.4665 62.2306
-		63.3694 2.2088 -88.2863
-		63.3694 -3.4665 -88.2863
-		6.6478 2.2088 -88.2863
-		6.6478 2.2088 62.2306
-		6.6478 2.2088 114.0742
-		6.6478 2.2088 165.9178
-		6.6478 2.2088 217.7615
-		6.6478 -3.4665 -88.2863
-		6.6478 -3.4665 62.2306
-		6.6478 -3.4665 114.0742
-		6.6478 -3.4665 165.9178
-		6.6478 -3.4665 217.7615
+		-29.2073 11.7393 269.6051
+		-29.2073 6.0640 269.6051
+		27.5143 11.7393 269.6051
+		27.5143 2.2088 217.7615
+		27.5143 2.2088 165.9178
+		27.5143 2.2088 114.0742
+		27.5143 2.2088 62.2306
+		27.5143 6.0640 269.6051
+		27.5143 -3.4665 217.7615
+		27.5143 -3.4665 165.9178
+		27.5143 -3.4665 114.0742
+		27.5143 -3.4665 62.2306
+		27.5143 2.2088 -88.2863
+		27.5143 -3.4665 -88.2863
+		-29.2073 2.2088 -88.2863
+		-29.2073 2.2088 62.2306
+		-29.2073 2.2088 114.0742
+		-29.2073 2.2088 165.9178
+		-29.2073 2.2088 217.7615
+		-29.2073 -3.4665 -88.2863
+		-29.2073 -3.4665 62.2306
+		-29.2073 -3.4665 114.0742
+		-29.2073 -3.4665 165.9178
+		-29.2073 -3.4665 217.7615
 	}
 	face 22 {
 		4 V(0 2 7 1) M(1) UV(0.00000 0.00000 1.00000 0.00000 1.00000 1.00000 0.00000 1.00000)
@@ -938,7 +938,7 @@ Object "obj2" {
 	}
 }
 Object "obj3" {
-	visible 15
+	visible 0
 	locking 0
 	shading 1
 	facet 59.5

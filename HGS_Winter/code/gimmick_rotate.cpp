@@ -158,7 +158,7 @@ void CGimmickRotate::Update(void)
 				}
 				else
 				{
-					CParticle::Create(m_aObj[nCnt].s_posOld, CEffect::TYPE_SWEAT);
+					
 				}
 			}
 		}

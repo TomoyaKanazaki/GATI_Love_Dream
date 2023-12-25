@@ -78,6 +78,7 @@ public:	// 誰でもアクセス可能
 	static int GetPriNumAll(int nPriority) { return m_aPriNumAll[nPriority]; }
 	static int GetNumEnemAll(void) { return m_nNumEnemyAll; }
 	void SetDraw(bool bUse = true) { m_bDraw = bUse; }
+	bool GetDraw(void) { return m_bDraw; }
 
 	// メンバ関数(取得
 	TYPE GetType(void) { return m_type; }

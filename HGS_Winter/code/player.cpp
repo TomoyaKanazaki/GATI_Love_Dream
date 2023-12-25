@@ -380,7 +380,7 @@ void CPlayer::Update(void)
 		m_Info.state = STATE_DEATH;
 		m_Info.fStateCounter = DEATH_INTERVAL;
 
-		CParticle::Create(m_Info.pos, CEffect::TYPE_BALEXPLOSION);
+		
 	}
 	else if (m_nLife > 0 && (m_Info.state != STATE_DEATH && m_Info.state != STATE_APPEAR))
 	{// ‘Ì—Í‚ ‚é
@@ -389,7 +389,7 @@ void CPlayer::Update(void)
 		if (m_fEffectCount >= PARTICLE_TIMER)
 		{
 			m_fEffectCount = 0.0f;
-			CParticle::Create(m_Info.pos, CEffect::TYPE_BUBBLE);
+			
 		}
 	}
 

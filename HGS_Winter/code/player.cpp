@@ -477,6 +477,7 @@ void CPlayer::Controller(void)
 		{
 			if (pInputKey->GetTrigger(DIK_SPACE) == true || pInputPad->GetTrigger(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true || pInputPad->GetTrigger(CInputPad::CInputPad::BUTTON_RIGHTBUTTON, m_nId) == true)
 			{
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SKI);			// •œŠˆ‰¹
 			}
 			fIner = STOP_INER;
 		}
@@ -532,8 +533,9 @@ void CPlayer::Controller(void)
 		return;
 	}
 
-	if (m_pObject->GetMotion()->GetNowMotion() == 1 && m_pObject->GetMotion()->GetNowFrame() == 0) {
-
+	if (m_pObject->GetMotion()->GetNowMotion() == 1 && m_pObject->GetMotion()->GetNowFrame() == 0)
+	{
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SKI);			// •œŠˆ‰¹
 	}
 }
 

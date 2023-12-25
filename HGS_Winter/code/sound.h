@@ -28,6 +28,9 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_STEP,			// ステップ音
 		LABEL_SE_DAMAGE,			// ダメージ音
 		LABEL_SE_SPAWN,			// 復活音
+		LABEL_SE_SKI,			// 復活音
+		LABEL_SE_DEATH,			// 復活音
+		LABEL_SE_SLIDE,			// 復活音
 		LABEL_MAX,
 	} LABEL;
 

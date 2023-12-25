@@ -10,6 +10,10 @@
 #include "debugproc.h"
 #include "score.h"
 
+// 静的メンバ変数宣言
+CEnemy *CEnemy::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
+CEnemy *CEnemy::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
+
 //==========================================
 //  定数定義
 //==========================================
@@ -24,7 +28,18 @@ namespace
 CEnemy::CEnemy(int nPriority) : CObjectX(nPriority),
 m_Life(0.0f)
 {
-
+	// 自分自身をリストに追加
+	if (m_pTop != NULL)
+	{// 先頭が存在している場合
+		m_pCur->m_pNext = this;	// 現在最後尾のオブジェクトのポインタにつなげる
+		m_pPrev = m_pCur;
+		m_pCur = this;	// 自分自身が最後尾になる
+	}
+	else
+	{// 存在しない場合
+		m_pTop = this;	// 自分自身が先頭になる
+		m_pCur = this;	// 自分自身が最後尾になる
+	}
 }
 
 //==========================================

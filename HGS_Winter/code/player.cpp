@@ -123,7 +123,7 @@ HRESULT CPlayer::Init(void)
 {
 	if (nullptr == m_pObject)
 	{
-		m_pObject = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
+		m_pObject = CCharacter::Create("data\\TXT\\player.txt");
 		m_pObject->GetMotion()->InitSet(0);
 		m_pObject->SetShadow(true);
 	}
@@ -352,11 +352,8 @@ void CPlayer::Update(void)
 
 	// ‹N•š‚Æ‚Ì“–‚½‚è”»’è
 	D3DXVECTOR3 nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	float fHeight = CMeshField::GetHeight(m_Info.pos);
-	
-	if (m_Info.pos.y <= fHeight) {
-		m_Info.pos.y = fHeight;
-	}
+	float fHeight = CMeshField::GetHeight(D3DXVECTOR3(m_Info.pos.x, m_Info.pos.y - 1.0f, m_Info.pos.z));
+	m_Info.pos.y = fHeight;
 
 	// ‰e‚ÌÝ’è
 	if (nullptr != m_pShadow) {
@@ -507,7 +504,7 @@ void CPlayer::Controller(void)
 
 			float fAdd = moveDiff.x + moveDiff.y + moveDiff.z;
 
-			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 15);
+			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 5);
 		}
 	}
 

@@ -89,6 +89,7 @@ public:	// 誰でもアクセス可能
 	void SetGoalValue(bool bValue) { m_bGoal = bValue; }
 	void SetUp(bool bValue) { m_bSetUp = bValue; }
 	void SetGoal(bool bValue);
+	void RotateCamera(void);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }

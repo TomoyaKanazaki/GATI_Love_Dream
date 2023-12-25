@@ -76,7 +76,6 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_SNOWATK:	// ‰Œ
 	{
-		
 		float fTanf = atan2f(Defmove.x, Defmove.z);
 		for (int nCnt = 0; nCnt < nNum; nCnt++)
 		{

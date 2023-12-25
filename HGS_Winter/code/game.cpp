@@ -314,9 +314,19 @@ void CGame::Update(void)
 		// フォグを寄せる
 		m_FogLength -= FOG_MOVE * CManager::GetInstance()->GetDeltaTime();
 		Fog::SetEnd(m_FogLength); // フォグの最大距離を設定
+
+		// 時間制限
+		if (m_Time >= GAME_TIME)
+		{
+			m_bEnd = true;
+		}
 	}
 	else
 	{
+		if (CManager::GetInstance()->GetFade()->GetState() == CFade::STATE_NONE)
+		{
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+		}
 		CManager::GetInstance()->GetFade()->Update();
 	}
 }

@@ -104,7 +104,7 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 //==========================================
 //  個別判定チェック(override)
 //==========================================
-bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti)
+bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
 {
 	// ダメージを受ける
 	if (m_Life < 1.0f)
@@ -116,5 +116,5 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 	ここで色を変える
 	*/
 
-	return CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax, fRefMulti);
+	return CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax);
 }

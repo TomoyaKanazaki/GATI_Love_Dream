@@ -31,7 +31,7 @@ public:	// 誰でもアクセス可能
 	void BindFile(int nIdx);
 
 	static CObjectX *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char *pFileName, const int nPriority = 4);
-	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
+	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax);
 	void SetRotSize(D3DXVECTOR3 &SetMax, D3DXVECTOR3 &SetMin, D3DXVECTOR3 vtxMax, D3DXVECTOR3 vtxMin, float fRot);
 
 	// メンバ関数(設定)
@@ -53,7 +53,7 @@ public:	// 誰でもアクセス可能
 protected:
 
 	// メンバ関数
-	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
+	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax);
 
 private:	// 自分だけがアクセス可能
 	

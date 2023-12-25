@@ -491,7 +491,7 @@ void CPlayer::Controller(void)
 		}
 
 		// •Ç
-		if (CObjectX::Collision(pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
+		if (CObjectX::Collision(pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax))
 		{
 			bDamage = true;
 			CManager::GetInstance()->GetDebugProc()->Print("***•Ç‚Æ“–‚½‚Á‚½‚æ***\n");

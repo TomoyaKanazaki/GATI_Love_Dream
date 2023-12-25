@@ -256,7 +256,7 @@ void CObjectX::SetRotation(const D3DXVECTOR3& rot)
 //==========================================================
 // 当たり判定
 //==========================================================
-bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, float fRefMulti)
+bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
 {
 	CObjectX *pObj = m_pTop;	// 先頭取得
 	bool bLand = false;	// 着地したか否か
@@ -266,7 +266,7 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 		CObjectX *pObjNext = pObj->m_pNext;
 		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		if (pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax, fRefMulti))
+		if (pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax))
 		{
 			bLand = true;
 		}
@@ -348,7 +348,7 @@ void CObjectX::SetRotSize(D3DXVECTOR3 &SetMax, D3DXVECTOR3 &SetMin, D3DXVECTOR3 
 //==========================================================
 // 個別判定チェック
 //==========================================================
-bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti)
+bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
 {
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	bool bLand = false;	// 着地したか否か
@@ -372,7 +372,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 		{//右から左にめり込んだ
 			bLand = true;
 			move.x *= -1.0f;
-			move.x *= fRefMulti;
 			pos.x = m_pos.x + vtxObjMax.x - vtxMin.x + 0.1f + move.x;
 		}
 		else if (posOld.x + vtxMax.x <= m_pos.x + vtxObjMin.x
@@ -383,7 +382,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 		 //位置を戻す
 			bLand = true;
 			move.x *= -1.0f;
-			move.x *= fRefMulti;
 			pos.x = m_pos.x + vtxObjMin.x - vtxMax.x - 0.1f + move.x;
 			//move.x = 0.0f;
 		}
@@ -395,7 +393,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 		 //位置を戻す
 			bLand = true;
 			move.z *= -1.0f;
-			move.z *= fRefMulti;
 			pos.z = m_pos.z + vtxObjMax.z - vtxMin.z + 0.1f + move.z;
 			//move.z = 0.0f;
 		}
@@ -407,7 +404,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 		 //位置を戻す
 			bLand = true;
 			move.z *= -1.0f;
-			move.z *= fRefMulti;
 			pos.z = m_pos.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
 			//move.z = 0.0f;
 		}

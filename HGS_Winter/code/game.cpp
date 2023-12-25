@@ -108,12 +108,12 @@ HRESULT CGame::Init(void)
 	// 外部ファイル読み込みの生成
 	if (nullptr == m_pFileLoad)
 	{// 使用していない場合
-		//m_pFileLoad = new CFileLoad;
+		m_pFileLoad = new CFileLoad;
 
 		if (m_pFileLoad != NULL)
 		{
-			//m_pFileLoad->Init();
-			//m_pFileLoad->OpenFile("data\\TXT\\model.txt");
+			m_pFileLoad->Init();
+			m_pFileLoad->OpenFile("data\\TXT\\model.txt");
 		}
 	}
 

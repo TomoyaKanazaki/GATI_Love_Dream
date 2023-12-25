@@ -151,6 +151,11 @@ LPDIRECT3DTEXTURE9 CTexture::SetAddress(int nIdx)
 		return NULL;
 	}
 
+	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
+	{
+		return nullptr;
+	}
+
 	return m_aFile[nIdx].pTexture;
 }
 

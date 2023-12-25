@@ -187,12 +187,6 @@ CObjectX *CObjectX::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const
 
 		// 読み込み確認
 		pObjectX->BindFile(pModelFile->Regist(pFileName));
-
-
-		D3DXMATERIAL *pMat;	//マテリアルデータへのポインタ
-		CXFile::FileData *pFileData = pModelFile->SetAddress(pObjectX->m_nIdxModel);
-		pMat = (D3DXMATERIAL*)pFileData->pBuffMat->GetBufferPointer();
-		pObjectX->m_ChangeMat = pMat->MatD3D;
 	}
 	else
 	{// 生成に失敗した場合
@@ -426,6 +420,19 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 	}
 
 	return bLand;
+}
+
+//==========================================
+//  変更後のマテリアルを初期化
+//==========================================
+void CObjectX::ResetMaterial(const char* pFileName)
+{
+	CXFile* pModelFile = CManager::GetInstance()->GetModelFile();
+
+	D3DXMATERIAL* pMat;	//マテリアルデータへのポインタ
+	CXFile::FileData* pFileData = pModelFile->SetAddress(m_nIdxModel);
+	pMat = (D3DXMATERIAL*)pFileData->pBuffMat->GetBufferPointer();
+	m_ChangeMat = pMat->MatD3D;
 }
 
 //==========================================================

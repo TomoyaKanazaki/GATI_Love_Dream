@@ -7,13 +7,14 @@
 #include "enemy.h"
 #include "Xfile.h"
 #include "manager.h"
+#include "debugproc.h"
 
 //==========================================
 //  定数定義
 //==========================================
 namespace
 {
-	const float DAMAGE = 0.001f; // 一回のヒットで受けるダメージ量
+	const float DAMAGE = 0.005f; // 一回のヒットで受けるダメージ量
 }
 
 //==========================================
@@ -92,6 +93,9 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 
 		// 読み込み確認
 		pEnemy->BindFile(pModelFile->Regist(pFileName));
+
+		// 変更後マテリアルカラーの初期化
+		pEnemy->ResetMaterial(pFileName);
 	}
 	else
 	{// 生成に失敗した場合
@@ -118,9 +122,6 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 		m_Life += DAMAGE;
 	}
 
-	// マテリアル変更フラグをオンにする
-	ChangeCol(true);
-
 	// 現在のマテリアルカラーを取得
 	D3DMATERIAL9 material = GetMaterial();
 
@@ -140,6 +141,9 @@ bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& 
 
 	// マテリアルカラーを設定
 	SetMaterial(material);
+
+	// マテリアル変更フラグをオンにする
+	ChangeCol(true);
 
 	// ヒットで返す
 	return true;

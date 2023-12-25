@@ -25,6 +25,7 @@ public:	// 誰でもアクセス可能な定義
 	{
 		TYPE_NONE = 0,	// 通常
 		TYPE_SNOWATK,		// 煙
+		TYPE_SNOWNPC,		// 敵
 		TYPE_MAX
 	}TYPE;
 

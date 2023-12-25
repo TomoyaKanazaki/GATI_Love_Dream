@@ -104,5 +104,36 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 		}
 	}
 	break;
+
+	case CEffect::TYPE_SNOWNPC:	// ‰Œ
+	{
+		float fTanf = atan2f(Defmove.x, Defmove.z);
+		for (int nCnt = 0; nCnt < nNum; nCnt++)
+		{
+			// À•W‚Ìİ’è
+			pos = Defpos;
+
+			float fRand = static_cast<float>((rand() % 51 - 25) * 0.01f);
+			float fRand2 = static_cast<float>(rand() % 100);
+			//ˆÚ“®—Ê‚Ìİ’è
+			move.x = sinf(fRand + fTanf) * (fRand2 * 0.5f);
+			move.y = ((float)(rand() % 3 + 1)) * 0.2f;
+			move.z = cosf(fRand + fTanf) * (fRand2 * 0.5f);
+
+			float frand = rand() % 8 * 0.1f;
+
+			//F‚Ìİ’è
+			col = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
+
+			//”¼Œa‚Ìİ’è
+			fRadius = 5.0f;
+
+			//õ–½‚Ìİ’è
+			fLife = 500.0f;
+
+			CEffect::Create(Defpos + (move), move, col, fRadius, fLife, type);
+		}
+	}
+	break;
 	}
 }

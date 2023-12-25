@@ -72,6 +72,7 @@ public:	// 誰でもアクセス可能
 	void SetDiffPosition(const D3DXVECTOR3& pos) { m_Info.posDiff = pos; }
 	void SetRotation(const D3DXVECTOR3& rot) { m_Info.rot = rot; }
 	void SetType(TYPE type);
+	bool Collision(const D3DXVECTOR3& pos, float fRadius);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -105,7 +106,7 @@ private:	// 自分だけがアクセス可能
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
-	int m_nLife;	// 体力
+	float m_fLife;	// 体力
 	static int m_nNumCount;
 };
 

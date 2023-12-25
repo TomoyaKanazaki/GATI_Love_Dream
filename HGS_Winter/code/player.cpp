@@ -499,7 +499,7 @@ void CPlayer::Controller(void)
 
 			float fAdd = moveDiff.x + moveDiff.y + moveDiff.z;
 
-			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 5);
+			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 4);
 		}
 
 		if (fIner == STOP_INER) {

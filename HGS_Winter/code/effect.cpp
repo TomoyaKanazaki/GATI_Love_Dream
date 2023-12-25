@@ -15,6 +15,7 @@
 #include "meshfield.h"
 #include "billboard.h"
 #include "objectX.h"
+#include "npc.h"
 
 //===============================================
 // –³–¼–¼‘O‹óŠÔ
@@ -127,6 +128,36 @@ void CEffect::Update(void)
 			// ”»’è‚ðŽæ‚é
 			D3DXVECTOR3 vtx = { m_Info.fRadius, m_Info.fRadius, m_Info.fRadius };
 			if(CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, -vtx, vtx, 1)){	// “–‚½‚Á‚½
+				m_bHit = true;
+			}
+
+			{
+				CNpc *pNpc = CNpc::GetTop();
+
+				while (pNpc != nullptr) {
+					CNpc *pNpcNext = pNpc->GetNext();
+
+					if (pNpc->Collision(m_Info.pos, m_Info.fRadius)) {
+						m_bHit = true;
+						break;
+					}
+
+					pNpc = pNpcNext;
+				}
+			}
+		}
+
+		break;
+
+	case TYPE_SNOWNPC:	// ‰Œ
+
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (!m_bHit) {	// “–‚½‚Á‚Ä‚¢‚È‚¢ê‡
+			// ”»’è‚ðŽæ‚é
+			D3DXVECTOR3 vtx = { m_Info.fRadius, m_Info.fRadius, m_Info.fRadius };
+			if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, -vtx, vtx, 2)) {	// “–‚½‚Á‚½
 				m_bHit = true;
 			}
 		}
@@ -321,6 +352,14 @@ void CEffect::DrawSet(void)
 	}
 	break;
 
+	case TYPE_SNOWNPC:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
 	}
 }
 

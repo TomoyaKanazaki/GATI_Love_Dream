@@ -59,6 +59,12 @@ namespace COOLTIME
 	const int WAIT = (90);
 }
 
+namespace
+{
+	const float DAMAGE = 0.002f; // 一回のヒットで受けるダメージ量
+	const float RADIUS = 100.0f;
+}
+
 // 前方宣言
 CNpc *CNpc::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
 CNpc *CNpc::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
@@ -88,7 +94,7 @@ CNpc::CNpc()
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
 	m_pObject = NULL;
-	m_nLife = 0;
+	m_fLife = 0;
 	m_pTarget = nullptr;
 
 	// 自分自身をリストに追加
@@ -122,12 +128,12 @@ HRESULT CNpc::Init(void)
 {
 	if (nullptr == m_pObject)
 	{
-		m_pObject = CCharacter::Create("data\\TXT\\player.txt");
+		m_pObject = CCharacter::Create("data\\TXT\\Enemy.txt");
 		m_pObject->GetMotion()->InitSet(0);
 		m_pObject->SetShadow(true);
 	}
 
-	m_nLife = START_LIFE;
+	m_fLife = 0.0f;
 
 	m_pObject->SetDraw();
 
@@ -206,12 +212,6 @@ void CNpc::Update(void)
 
 	StateSet();
 
-
-	if (m_nLife <= 0)
-	{
-		return;
-	}
-
 	if (m_Info.state != STATE_DEATH)
 	{
 		// プレイヤー操作
@@ -220,7 +220,6 @@ void CNpc::Update(void)
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f]\n", GetRotation().x, GetRotation().y, GetRotation().z);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ]\n", m_nLife);
 
 	// 使用オブジェクト更新
 	if (nullptr != m_pObject) {
@@ -373,7 +372,7 @@ void CNpc::Controller(void)
 
 			float fAdd = moveDiff.x + moveDiff.y + moveDiff.z;
 
-			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 5);
+			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWNPC, static_cast<int>(fAdd) * 4);
 		}
 	}
 
@@ -399,11 +398,12 @@ void CNpc::Move(void)
 		return;
 	}
 
+	float fMove = MOVE * (1.0f - m_fLife);
 	D3DXVECTOR3 nor = m_pTarget->GetPosition() - m_Info.pos;
 	D3DXVec3Normalize(&nor, &nor);
 	m_fRotDest = atan2f(nor.x, nor.z);
-	m_Info.move.x += sinf(m_fRotDest) * MOVE;
-	m_Info.move.z += cosf(m_fRotDest) * MOVE;
+	m_Info.move.x += sinf(m_fRotDest) * fMove;
+	m_Info.move.z += cosf(m_fRotDest) * fMove;
 	m_fRotDest *= -1.0f;
 
 	nor = m_Info.pos - m_pTarget->GetPosition();
@@ -610,12 +610,7 @@ void CNpc::Damage(int nDamage)
 //===============================================
 void CNpc::SetLife(int nLife)
 {
-	m_nLife = nLife;
-
-	if (m_nLife < 0)
-	{
-		m_nLife = 0;
-	}
+	
 }
 
 //===============================================
@@ -642,4 +637,29 @@ void CNpc::LockOn(void)
 	}
 
 	m_pTarget = KariTarget;
+}
+
+//===============================================
+// 当たり判定
+//===============================================
+bool CNpc::Collision(const D3DXVECTOR3& pos, float fRadius)
+{
+	// 距離を取得
+	float fLength = sqrtf((pos.x - m_Info.pos.x) * (pos.x - m_Info.pos.x)
+		+ (pos.z - m_Info.pos.z) * (pos.z - m_Info.pos.z));
+
+	float fSize = fRadius + RADIUS;
+
+	if (fLength > fSize)
+	{// 触れていない
+		return false;
+	}
+
+	m_fLife += DAMAGE;
+
+	if (m_fLife >= 1.0f) {
+		Uninit();
+	}
+	
+	return true;
 }

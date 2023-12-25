@@ -61,10 +61,10 @@ namespace COOLTIME
 
 namespace
 {
-	const float DAMAGE = 0.002f; // 一回のヒットで受けるダメージ量
+	const float DAMAGE = 0.04f; // 一回のヒットで受けるダメージ量
 	const float RADIUS = 100.0f;
 	const int MAX_SPAWN = 3;
-	const int SPAWN_TIMER = 20;
+	const int SPAWN_TIMER = 10;
 }
 
 // 前方宣言

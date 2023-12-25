@@ -201,6 +201,7 @@
     <ClCompile Include="code\result.cpp" />
     <ClCompile Include="code\sample\sample_object.cpp" />
     <ClCompile Include="code\sample\sample_task.cpp" />
+    <ClCompile Include="code\score.cpp" />
     <ClCompile Include="code\shadow.cpp" />
     <ClCompile Include="code\slow.cpp" />
     <ClCompile Include="code\sound.cpp" />
@@ -213,7 +214,6 @@
     <ClCompile Include="code\tutorial.cpp" />
     <ClCompile Include="code\Xfile.cpp" />
     <ClCompile Include="code\gimmick.cpp" />
-    <ClCompile Include="score.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\billboard.h" />
@@ -258,6 +258,7 @@
     <ClInclude Include="code\result.h" />
     <ClInclude Include="code\sample\sample_object.h" />
     <ClInclude Include="code\sample\sample_task.h" />
+    <ClInclude Include="code\score.h" />
     <ClInclude Include="code\shadow.h" />
     <ClInclude Include="code\slow.h" />
     <ClInclude Include="code\sound.h" />
@@ -271,8 +272,6 @@
     <ClInclude Include="code\Xfile.h" />
     <ClInclude Include="code\gimmick.h" />
     <ClInclude Include="code\gimmick_air.h" />
-    <ClInclude Include="mesh_water.h" />
-    <ClInclude Include="score.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -64,11 +64,12 @@ void CScore::Draw()
 //==========================================
 //  ¶¬ˆ—
 //==========================================
-CScore* CScore::GetScore()
+CScore* CScore::Create()
 {
 	if (m_pScore == nullptr)
 	{
 		m_pScore = new CScore;
+		m_pScore->Init();
 	}
 
 	return m_pScore;

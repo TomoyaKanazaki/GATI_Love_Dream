@@ -177,7 +177,7 @@
     <ClCompile Include="code\sample\sample_task.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="score.cpp">
+    <ClCompile Include="code\score.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -308,9 +308,6 @@
     <ClInclude Include="code\gimmick_fish.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="mesh_water.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="code\timer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -350,7 +347,7 @@
     <ClInclude Include="code\sample\sample_task.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="score.h">
+    <ClInclude Include="code\score.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

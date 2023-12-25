@@ -106,15 +106,41 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const cha
 //==========================================
 bool CEnemy::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
 {
+	// ヒット判定を取得
+	if (!CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax))
+	{
+		return false;
+	}
+
 	// ダメージを受ける
 	if (m_Life < 1.0f)
 	{
 		m_Life += DAMAGE;
 	}
 
-	/*
-	ここで色を変える
-	*/
+	// マテリアル変更フラグをオンにする
+	ChangeCol(true);
 
-	return CObjectX::CollisionCheck(pos, posOld, move, vtxMin, vtxMax);
+	// 現在のマテリアルカラーを取得
+	D3DMATERIAL9 material = GetMaterial();
+
+	// カラーをライフと比較する
+	if (material.Diffuse.r < m_Life)
+	{
+		material.Diffuse.r = m_Life;
+	}
+	if (material.Diffuse.g < m_Life)
+	{
+		material.Diffuse.g = m_Life;
+	}
+	if (material.Diffuse.b < m_Life)
+	{
+		material.Diffuse.b = m_Life;
+	}
+
+	// マテリアルカラーを設定
+	SetMaterial(material);
+
+	// ヒットで返す
+	return true;
 }

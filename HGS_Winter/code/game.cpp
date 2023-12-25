@@ -68,8 +68,9 @@ namespace
 {
 	const float GAME_TIME = 120.0f; // ゲームの制限時間
 	const float FOG_START = 8000.0f; // フォグの初期位置(距離)
-	const float FOG_END = 500.0f; // フォグの最終位置(距離)
-	const float FOG_MOVE = (FOG_START - FOG_END) / GAME_TIME; // 1秒間に近づく距離
+	const float FOG_TARGET = 500.0f; // フォグの初期位置(距離)
+	const float FOG_END = 0.0f; // フォグの最終位置(距離)
+	const float FOG_MOVE = (FOG_START - FOG_TARGET) / GAME_TIME; // 1秒間に近づく距離
 	const D3DXCOLOR FOG_COLOR = D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f); // フォグの色
 }
 

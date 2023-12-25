@@ -43,6 +43,7 @@ CEffect::CEffect()
 	m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Info.fRadius = 0.0f;
 	m_Info.Type = TYPE_NONE;
+	m_bHit = false;
 }
 
 //===============================================
@@ -120,15 +121,20 @@ void CEffect::Update(void)
 		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 
+		if (!m_bHit) {	// “–‚½‚Á‚Ä‚¢‚È‚¢ê‡
+			// ”»’è‚ğæ‚é
+			{	// “–‚½‚Á‚½
+				m_bHit = true;
+			}
+		}
+
 		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
 	{// ’l‚ª‚Ğ‚Á‚­‚è•Ô‚Á‚½
-
-		
+	
 		Uninit();
-
 		return;
 	}
 

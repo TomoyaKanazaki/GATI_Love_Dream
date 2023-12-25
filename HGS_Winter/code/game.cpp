@@ -123,9 +123,10 @@ HRESULT CGame::Init(void)
 	//pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.95f, 0.0f));
 	//pObj->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.05f);
 
-	//m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//m_pPlayer->SetUp(true);
-	//m_pPlayer->SetType(CPlayer::TYPE_SEND);
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pPlayer->SetUp(true);
+	m_pPlayer->SetType(CPlayer::TYPE_ACTIVE);
+	m_pPlayer->BindId(0);
 	//m_pCountDown = CCountDown::Create();
 
 	//m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(-8000.0f, -300.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10000.0f, 10.0f, 10, 10);

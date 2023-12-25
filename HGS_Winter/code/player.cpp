@@ -475,6 +475,9 @@ void CPlayer::Controller(void)
 		float fIner = INER;
 		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_RIGHTBUTTON, m_nId) == true)
 		{
+			if (pInputKey->GetTrigger(DIK_SPACE) == true || pInputPad->GetTrigger(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true || pInputPad->GetTrigger(CInputPad::CInputPad::BUTTON_RIGHTBUTTON, m_nId) == true)
+			{
+			}
 			fIner = STOP_INER;
 		}
 

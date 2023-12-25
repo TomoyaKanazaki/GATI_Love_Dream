@@ -32,7 +32,7 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(1.0f)		// 移動量
+#define MOVE	(0.4f)		// 移動量
 #define SHW_MOVE	(1.0f)	// シャワー中移動量
 #define PLAYER_GRAVITY	(-0.15f)		//プレイヤー重力
 #define PLAYER_JUMP		(10.0f)		//プレイヤージャンプ力
@@ -51,10 +51,12 @@
 #define SPAWN_INTERVAL	(60.0f)
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
+#define STOP_LENGTH	(400.0f)
 
 namespace COOLTIME
 {
 	const int STOP = (120);
+	const int WAIT = (120);
 }
 
 // 前方宣言
@@ -225,7 +227,6 @@ void CNpc::Update(void)
 		m_pObject->SetPosition(D3DXVECTOR3(m_Info.pos.x, m_Info.pos.y - 50.0f, m_Info.pos.z - 20.0f));
 		m_pObject->SetRotation(m_Info.rot);
 		m_pObject->Update();
-		m_pObject->GetMotion()->BlendSet(START_LIFE - m_nLife);
 	}
 
 	// 起伏との当たり判定
@@ -316,15 +317,6 @@ void CNpc::Controller(void)
 		}
 
 		// 壁
-		if (CObjectX::Collision(pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax))
-		{
-			bDamage = true;
-			CManager::GetInstance()->GetDebugProc()->Print("***壁と当たったよ***\n");
-			if (nDamage == 0)
-			{
-				nDamage = 1;
-			}
-		}
 	}
 
 	// ダメージ確認
@@ -341,6 +333,25 @@ void CNpc::Controller(void)
 
 	{
 		float fIner = INER;
+
+		// 慣性を変更するか確認
+		if (m_Info.state == STATE_MOVE) {	// 移動中
+			if (m_pTarget != nullptr) {
+				// 距離を取得
+				float fLength = sqrtf((pos.x - m_pTarget->GetPosition().x) * (pos.x - m_pTarget->GetPosition().x)
+					+ (pos.z - m_pTarget->GetPosition().z) * (pos.z - m_pTarget->GetPosition().z));
+
+				if (fLength <= STOP_LENGTH) {
+					fIner = STOP_INER;
+					m_Info.state = STATE_STOP;
+					m_Info.fStateCounter = COOLTIME::WAIT;
+				}
+			}
+		}
+		else {
+			fIner = STOP_INER;
+		}
+
 		D3DXVECTOR3 moveOld = m_Info.move;
 
 		m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
@@ -390,9 +401,14 @@ void CNpc::Move(void)
 
 	D3DXVECTOR3 nor = m_pTarget->GetPosition() - m_Info.pos;
 	D3DXVec3Normalize(&nor, &nor);
-	m_fRotDiff = atan2f(nor.x, nor.z);
-	m_Info.move.x = sinf(m_fRotDiff);
-	m_Info.move.z = cosf(m_fRotDiff);
+	m_fRotDest = atan2f(nor.x, nor.z);
+	m_Info.move.x += sinf(m_fRotDest) * MOVE;
+	m_Info.move.z += cosf(m_fRotDest) * MOVE;
+	m_fRotDest *= -1.0f;
+
+	nor = m_Info.pos - m_pTarget->GetPosition();
+	D3DXVec3Normalize(&nor, &nor);
+	m_fRotDest = atan2f(nor.x, nor.z);
 }
 
 //===============================================
@@ -400,7 +416,7 @@ void CNpc::Move(void)
 //===============================================
 void CNpc::Rotation(void)
 {
-
+	
 }
 
 //===============================================
@@ -530,6 +546,7 @@ void CNpc::StateSet(void)
 	{
 	case STATE_NEUTRAL:
 
+		m_pObject->GetMotion()->Set(0);
 		m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
 		if (m_Info.fStateCounter <= 0.0f)
 		{
@@ -544,12 +561,13 @@ void CNpc::StateSet(void)
 
 	case STATE_MOVE:
 	{
-
+		m_pObject->GetMotion()->BlendSet(1);
 	}
 		break;
 
 	case STATE_STOP:
 
+		m_pObject->GetMotion()->BlendSet(2);
 		m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
 		if (m_Info.fStateCounter <= 0.0f)
 		{

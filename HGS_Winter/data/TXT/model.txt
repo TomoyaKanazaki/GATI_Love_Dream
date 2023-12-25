@@ -28,10 +28,10 @@ NUM_MODEL = 5
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/tree.x	# [0]砂場
-MODEL_FILENAME = data/MODEL/2mcube.x	# [1]木
-MODEL_FILENAME = data/MODEL/3mcube.x	# [2]木
-MODEL_FILENAME = data/MODEL/180mlongCube.x	# [3]木
+MODEL_FILENAME = data/MODEL/tree.x		# [0]砂場
+MODEL_FILENAME = data/MODEL/seesaw.x	# [1]木
+MODEL_FILENAME = data/MODEL/swing.x		# [2]木
+MODEL_FILENAME = data/MODEL/dome.x		# [3]木
 MODEL_FILENAME = data/MODEL/5mcube.x	# [4]フェンス上
 
 #------------------------------------------------------------------------------
@@ -88,8 +88,29 @@ END_FIELDSET
 
 # 敵配置
 ENEMYSET
-	TYPE = 0
+	TYPE = 1
 	POS = 0.0 0.0 -0.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_ENEMYSET
+
+ENEMYSET
+	TYPE = 2
+	POS = -2000.0 0.0 -0.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_ENEMYSET
+
+ENEMYSET
+	TYPE = 3
+	POS = 0.0 0.0 2000.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_ENEMYSET
+
+ENEMYSET
+	TYPE = 2
+	POS = 0.0 0.0 -2000.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_ENEMYSET
@@ -97,7 +118,49 @@ END_ENEMYSET
 # モデル配置
 MODELSET
 	TYPE = 0
-	POS = 260.0 0.0 -0.0
+	POS = 2500.0 0.0 -0.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2800.0 0.0 -0.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2750.0 0.0 -100.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2300.0 0.0 -200.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2200.0 0.0 -300.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2100.0 0.0 -400.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2000.0 0.0 -500.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET

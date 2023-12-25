@@ -36,6 +36,7 @@
 #include "protocol_online.h"
 #include "object2D.h"
 #include "fog.h"
+#include "npc.h"
 
 // グローバル
 
@@ -131,13 +132,16 @@ HRESULT CGame::Init(void)
 		}
 	}
 
+
+
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_pPlayer->SetUp(true);
 	m_pPlayer->SetType(CPlayer::TYPE_ACTIVE);
 	m_pPlayer->BindId(0);
 	//m_pCountDown = CCountDown::Create();
+	CNpc::Create(D3DXVECTOR3(-1000.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6500.0f, 10.0f, 10, 10);
+	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3000.0f, 10.0f, 10, 10);
 
 	if (m_state == STATE_MULTI)
 	{// マルチの場合
@@ -176,7 +180,7 @@ HRESULT CGame::Init(void)
 	//カメラ初期化
 	{
 		CManager::GetInstance()->GetCamera()->Init();
-		CManager::GetInstance()->GetCamera()->SetLength(700.0f);
+		CManager::GetInstance()->GetCamera()->SetLength(500.0f);
 		CManager::GetInstance()->GetCamera()->SetRotation({0.0f, D3DX_PI * 0.2f, D3DX_PI * 0.4f});
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定

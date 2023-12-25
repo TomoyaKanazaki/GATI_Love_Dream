@@ -64,6 +64,45 @@ HRESULT CEnemy::Init(void)
 void CEnemy::Uninit(void)
 {
 	CObjectX::Uninit();
+
+	// リストから自分自身を削除する
+	if (m_pTop == this)
+	{// 自身が先頭
+		if (m_pNext != NULL)
+		{// 次が存在している
+			m_pTop = m_pNext;	// 次を先頭にする
+			m_pNext->m_pPrev = NULL;	// 次の前のポインタを覚えていないようにする
+		}
+		else
+		{// 存在していない
+			m_pTop = NULL;	// 先頭がない状態にする
+			m_pCur = NULL;	// 最後尾がない状態にする
+		}
+	}
+	else if (m_pCur == this)
+	{// 自身が最後尾
+		if (m_pPrev != NULL)
+		{// 次が存在している
+			m_pCur = m_pPrev;			// 前を最後尾にする
+			m_pPrev->m_pNext = NULL;	// 前の次のポインタを覚えていないようにする
+		}
+		else
+		{// 存在していない
+			m_pTop = NULL;	// 先頭がない状態にする
+			m_pCur = NULL;	// 最後尾がない状態にする
+		}
+	}
+	else
+	{
+		if (m_pNext != NULL)
+		{
+			m_pNext->m_pPrev = m_pPrev;	// 自身の次に前のポインタを覚えさせる
+		}
+		if (m_pPrev != NULL)
+		{
+			m_pPrev->m_pNext = m_pNext;	// 自身の前に次のポインタを覚えさせる
+		}
+	}
 }
 
 //==========================================

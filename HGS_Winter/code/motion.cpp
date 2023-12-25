@@ -28,6 +28,7 @@ CMotion::CMotion()
 	m_nNowMotion = 1;
 	m_FileData.nNumParts = 0;
 	m_FileData.ppParts = NULL;
+	m_bEnd = false;
 
 	for (int nCnt = 0; nCnt < MAX_MOTION; nCnt++)
 	{
@@ -75,6 +76,21 @@ void CMotion::Uninit(void)
 //===================================================
 void CMotion::Update(void)
 {
+	if (m_FileData.ppParts == NULL)
+	{// 使用されていない場合
+		return;
+	}
+
+	if (aInfo[m_nNowMotion].nNumKey <= 0)
+	{//キー数が存在している場合
+		return;
+	}
+
+	if (m_bEnd && !aInfo[m_nNowMotion].bLoop)
+	{
+		return;
+	}
+
 	if (m_FileData.ppParts != NULL)
 	{// 使用されていない場合
 		if (aInfo[m_nNowMotion].nNumKey > 0)
@@ -167,6 +183,11 @@ void CMotion::Update(void)
 						m_OldKey[nCntParts].fRotX = m_FileData.ppParts[nCntParts]->GetCurrentRotation().x;
 						m_OldKey[nCntParts].fRotY = m_FileData.ppParts[nCntParts]->GetCurrentRotation().y;
 						m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetCurrentRotation().z;
+					}
+
+					if (nNextkey >= aInfo[nNowMotion].nNumKey - 1)
+					{// 終了
+						m_bEnd = true;
 					}
 
 					m_nOldType = nNowMotion;
@@ -311,6 +332,7 @@ void CMotion::BlendSet(int nType)
 			m_nNowMotion = nType;	// 種類を設定
 			m_nNowKey = aInfo[m_nNowMotion].nNumKey - 1;
 			m_fNowFrame = 0;
+			m_bEnd = false;
 
 			for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
 			{
@@ -345,6 +367,7 @@ void CMotion::InitSet(int nType)
 		m_nNowMotion = nType;	// 種類を設定
 		m_nNowKey = 0;
 		m_fNowFrame = 0;
+		m_bEnd = false;
 
 		for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
 		{
@@ -371,6 +394,7 @@ void CMotion::Set(int nType)
 			m_nNowMotion = nType;	// 種類を設定
 			m_nNowKey = 0;
 			m_fNowFrame = 0;
+			m_bEnd = false;
 
 			for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
 			{

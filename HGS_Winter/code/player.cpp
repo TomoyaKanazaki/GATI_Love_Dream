@@ -347,7 +347,6 @@ void CPlayer::Update(void)
 		m_pObject->SetPosition(D3DXVECTOR3(m_Info.pos.x, m_Info.pos.y - 50.0f, m_Info.pos.z - 20.0f));
 		m_pObject->SetRotation(m_Info.rot);
 		m_pObject->Update();
-		m_pObject->GetMotion()->BlendSet(START_LIFE - m_nLife);
 	}
 
 	// 起伏との当たり判定
@@ -415,11 +414,7 @@ void CPlayer::Controller(void)
 
 	// 操作処理
 	{
-		if (pInputKey->GetPress(DIK_SPACE) == false && pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId) == false)
-		{
-			Move();		// 移動
-		}
-
+		Move();		// 移動
 		Rotation();	// 回転
 		RotateCamera();	// カメラ回転
 	}
@@ -506,6 +501,16 @@ void CPlayer::Controller(void)
 
 			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 5);
 		}
+
+		if (fIner == STOP_INER) {
+			m_pObject->GetMotion()->BlendSet(2);
+		}
+		else if (m_bMove) {
+			m_pObject->GetMotion()->BlendSet(1);
+		}
+		else {
+			m_pObject->GetMotion()->Set(0);
+		}
 	}
 
 	// 壁との当たり判定
@@ -527,6 +532,12 @@ void CPlayer::Move(void)
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();	// キーボードのポインタ
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
+	m_bMove = false;
+
+	if (pInputKey->GetPress(DIK_SPACE) || pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId))
+	{
+		fSpeed = 0.0f;
+	}
 
 	// 入力装置確認
 	if (nullptr == pInputKey){

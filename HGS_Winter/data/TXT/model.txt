@@ -140,7 +140,7 @@ END_MODELSET
 
 MODELSET
 	TYPE = 0
-	POS = -2800.0 0.0 -0.0
+	POS = -4600.0 0.0 -0.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#égópÇµÇ»Ç¢èÍçáÇÕ0
 END_MODELSET

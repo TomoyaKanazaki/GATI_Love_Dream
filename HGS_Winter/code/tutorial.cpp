@@ -71,39 +71,10 @@ CTutorial::~CTutorial()
 //===============================================
 HRESULT CTutorial::Init(void)
 {
-	// 外部ファイル読み込みの生成
-	if (m_pFileLoad == NULL)
-	{// 使用していない場合
-		m_pFileLoad = new CFileLoad;
-
-		if (m_pFileLoad != NULL)
-		{
-			m_pFileLoad->Init();
-			m_pFileLoad->OpenFile("data\\TXT\\tutorial.txt");
-		}
-	}
-
-	// オブジェクト生成
-	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 20000.0f, 10.0f, 10, 10);
-	CMeshCylinder::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 17000.0f, 100.0f, 10, 10);
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	m_pPlayer->SetType(CPlayer::TYPE_ACTIVE);
-
-	//カメラ初期化
-	{
-		CManager::GetInstance()->GetCamera()->Init();
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, CManager::GetInstance()->GetCamera()->GetRotation().z));
-		D3DVIEWPORT9 viewport;
-		//プレイヤー追従カメラの画面位置設定
-		viewport.X = 0;
-		viewport.Y = 0;
-		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
-		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
-		viewport.MinZ = 0.0f;
-		viewport.MaxZ = 1.0f;
-		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
-	}
-
+	CObject2D *p = CObject2D::Create(6);
+	p->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+	p->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
+	p->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial.png"));
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 
 	return S_OK;
@@ -135,19 +106,11 @@ void CTutorial::Uninit(void)
 //===============================================
 void CTutorial::Update(void)
 {
-	if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_Y, 0) || CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_Y))
+	if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
 		CGame::SetState(CGame::STATE_TIMEATTACK);
 	}
-	else if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_B, 0) || CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_B))
-	{
-		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
-		CGame::SetState(CGame::STATE_MULTI);
-	}
-
-	CManager::GetInstance()->GetDebugProc()->Print("[START, ENTER入力でタイムアタック遷移]\n");
-	CManager::GetInstance()->GetDebugProc()->Print("[BACK, BACX SPACE入力で対戦遷移]\n");
 
 	// 更新処理
 	CScene::Update();

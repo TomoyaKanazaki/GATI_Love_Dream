@@ -25,12 +25,11 @@
 #include "shadow.h"
 #include "gimmick.h"
 #include <assert.h>
-#include "billboard.h"
 #include "character.h"
 #include "motion.h"
-#include "particle.h"
-#include "effect.h"
 #include "sound.h"
+#include "particle.h"
+#include "billboard.h"
 
 //===============================================
 // マクロ定義
@@ -43,7 +42,7 @@
 #define WIDTH	(20.0f)		// 幅
 #define HEIGHT	(80.0f)	// 高さ
 #define INER	(0.015f)		// 慣性
-#define STOP_INER (0.1f)	// 停止慣性
+#define STOP_INER (0.125f)	// 停止慣性
 #define STEP_SPEED	(50.0f)
 #define STEP_COOLTIME	(90.0f)
 #define START_LIFE	(4)	// 初期体力
@@ -161,15 +160,6 @@ HRESULT CPlayer::Init(void)
 		m_pShadow = CShadow::Create(m_Info.pos, 50.0f, 50.0f);
 		m_pShadow->SetpVtx(m_ppBillBoard[m_nLife - 1]->GetWidth(), m_ppBillBoard[m_nLife - 1]->GetHeight());
 		m_pShadow->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, (float)((float)m_nLife / (float)START_LIFE * SHADOW_ALPHA)));
-	}
-
-	if (nullptr == m_pMapIcon && CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
-	{
-		m_pMapIcon = CObject2D::Create();
-		m_pMapIcon->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\mapicon.png"));
-		m_pMapIcon->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.025f, SCREEN_HEIGHT * 0.97f, 0.0f));
-		m_pMapIcon->SetCol(D3DXCOLOR(0.0f, 0.8f, 1.0f, 1.0f));
-		m_pMapIcon->SetSize(10.0f, 10.0f);
 	}
 
 	m_pObject->SetDraw();
@@ -409,47 +399,6 @@ void CPlayer::Update(void)
 	if (nullptr != m_pShadow) {
 		m_pShadow->SetPosition(D3DXVECTOR3(m_Info.pos.x, fHeight + 1.0f, m_Info.pos.z));
 	}
-
-	// シャボン玉更新
-	for (int nCnt = 0; nCnt < START_LIFE; nCnt++)
-	{
-		if (nullptr != m_ppBillBoard){
-			D3DXVECTOR3 rot = m_ppBillBoard[nCnt]->GetRotation();
-
-			rot.z += 0.0025f * (1 - (nCnt % 2 * 2));
-
-			if (rot.z > D3DX_PI)
-			{
-				rot.z += -D3DX_PI * 2;
-			}
-			else if (rot.z < -D3DX_PI)
-			{
-				rot.z += D3DX_PI * 2;
-			}
-
-			m_ppBillBoard[nCnt]->SetRotation(rot);
-			m_ppBillBoard[nCnt]->SetPosition(D3DXVECTOR3(m_Info.pos.x, m_Info.pos.y + 100.0f + 10.0f * nCnt, m_Info.pos.z));
-			m_ppBillBoard[nCnt]->SetSize(m_ppBillBoard[nCnt]->GetWidth(), m_ppBillBoard[nCnt]->GetHeight());
-		}
-	}
-
-	// マップ更新
-	if (m_pMapIcon != nullptr)
-	{
-		float fDiff = (m_Info.pos.x / -15000.0f);
-		
-		if (fDiff > 0.975f)
-		{
-			fDiff = 0.975f;
-		}
-		else if (fDiff < 0.025f)
-		{
-			fDiff = 0.025f;
-		}
-
-		m_pMapIcon->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * fDiff, m_pMapIcon->GetPosition().y, 0.0f));
-		m_pMapIcon->SetSize(10.0f, 10.0f);
-	}
 }
 
 //===============================================
@@ -497,6 +446,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 pos = GetPosition();	// 座標を取得
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	CCamera *pCamera = CManager::GetInstance()->GetCamera();					// カメラのポインタ
+	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();	// キーボードのポインタ
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();								// カメラの角度
 	bool bDamage = false;
@@ -505,10 +455,11 @@ void CPlayer::Controller(void)
 
 	// 操作処理
 	{
-		if (pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == false)
+		if (pInputKey->GetPress(DIK_SPACE) == false && pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == false)
 		{
 			Move();		// 移動
 		}
+
 		Rotation();	// 回転
 	}
 
@@ -571,13 +522,34 @@ void CPlayer::Controller(void)
 
 	{
 		float fIner = INER;
-		if (pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == true)
+		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == true)
 		{
 			fIner = STOP_INER;
 		}
 
+		D3DXVECTOR3 moveOld = m_Info.move;
+
 		m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
 		m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
+
+		if (fIner == STOP_INER) {	// 停止中の場合
+			D3DXVECTOR3 moveDiff = moveOld - m_Info.move;
+
+			// 移動量負だったら正にする
+			if (moveDiff.x < -1.0f) {
+				moveDiff.x *= -1.0f;
+			}
+			if (moveDiff.y < -1.0f) {
+				moveDiff.y *= -1.0f;
+			}
+			if (moveDiff.z < -1.0f) {
+				moveDiff.z *= -1.0f;
+			}
+
+			float fAdd = moveDiff.x + moveDiff.y + moveDiff.z;
+
+			CParticle::Create(m_Info.pos, m_Info.move, CEffect::TYPE_SNOWATK, static_cast<int>(fAdd) * 15);
+		}
 	}
 
 	// 壁との当たり判定
@@ -610,15 +582,15 @@ void CPlayer::Move(void)
 		return;
 	}
 
-	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_MINUS) == true)
+	if (pInputKey->GetPress(DIK_A) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_MINUS) == true)
 	{
-		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
+		if (pInputKey->GetPress(DIK_W) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.25f);
 		}
-		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
+		else if (pInputKey->GetPress(DIK_S) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
@@ -634,16 +606,16 @@ void CPlayer::Move(void)
 		// 移動した状態にする
 		m_bMove = true;
 	}
-	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_PLUS) == true)
+	else if (pInputKey->GetPress(DIK_D) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_PLUS) == true)
 	{
-		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
+		if (pInputKey->GetPress(DIK_W) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
 
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.75f);
 		}
-		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
+		else if (pInputKey->GetPress(DIK_S) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
@@ -660,7 +632,7 @@ void CPlayer::Move(void)
 		// 移動した状態にする
 		m_bMove = true;
 	}
-	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
+	else if (pInputKey->GetPress(DIK_W) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 	{
 		m_Info.move.x += -cosf(CamRot.y) * fSpeed;
 		m_Info.move.z += -sinf(CamRot.y) * fSpeed;
@@ -670,7 +642,7 @@ void CPlayer::Move(void)
 		m_bMove = true;
 
 	}
-	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
+	else if (pInputKey->GetPress(DIK_S) == true || pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
 	{
 		m_Info.move.x += cosf(CamRot.y) * fSpeed;
 		m_Info.move.z += sinf(CamRot.y) * fSpeed;

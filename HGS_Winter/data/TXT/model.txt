@@ -86,6 +86,14 @@ FIELDSET
 	MOVE = 0.0 0.0
 END_FIELDSET
 
+# 敵配置
+ENEMYSET
+	TYPE = 0
+	POS = 0.0 0.0 -0.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_ENEMYSET
+
 # モデル配置
 MODELSET
 	TYPE = 0

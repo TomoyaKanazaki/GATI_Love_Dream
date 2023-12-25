@@ -82,10 +82,12 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			// À•W‚Ìİ’è
 			pos = Defpos;
 
+			float fRand = static_cast<float>((rand() % 51 - 25) * 0.01f);
+			float fRand2 = static_cast<float>(rand() % 100);
 			//ˆÚ“®—Ê‚Ìİ’è
-			move.x = sinf((float)(rand() % 141 - 70) * 0.01f + fTanf) * ((float)(rand() % 100)) * 0.5f;
-			move.y = ((float)(rand() % 3 + 1)) * 3.0f;
-			move.z = cosf((float)(rand() % 141 - 70) * 0.01f + fTanf) * ((float)(rand() % 100)) * 0.5f;
+			move.x = sinf(fRand + fTanf) * (fRand2 * 0.5f);
+			move.y = ((float)(rand() % 3 + 1)) * 0.2f;
+			move.z = cosf(fRand + fTanf) * (fRand2 * 0.5f);
 
 			float frand = rand() % 8 * 0.1f;
 
@@ -93,7 +95,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			col = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
 
 			//”¼Œa‚Ìİ’è
-			fRadius = 10.0f;
+			fRadius = 5.0f;
 
 			//õ–½‚Ìİ’è
 			fLife = 500.0f;

@@ -47,11 +47,15 @@ public:	// 誰でもアクセス可能
 	void ListOut(void);
 	int GetModelType(void) { return m_nIdxModel; }
 
+protected:
+
+	// メンバ関数
+	virtual bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
+
 private:	// 自分だけがアクセス可能
 	
 	// メンバ関数
 	//D3DMATERIAL9 SetSlowCol(D3DMATERIAL9 *pMat);
-	bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
 
 	// メンバ変数c
 	static CObjectX *m_pTop;	// 先頭のオブジェクトへのポインタ

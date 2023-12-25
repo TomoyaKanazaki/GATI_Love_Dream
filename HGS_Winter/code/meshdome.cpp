@@ -134,7 +134,12 @@ void CMeshDome::SetVtxInfo(void)
 		m_pVtx[nCntVtx].nor = vecDir;
 
 		//F
-		m_pVtx[nCntVtx].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME) {
+			m_pVtx[nCntVtx].col = D3DXCOLOR(0.8f, 0.75f, 1.0f, 1.0f);
+		}
+		else {
+			m_pVtx[nCntVtx].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		}
 
 		m_pVtx[nCntVtx].tex = D3DXVECTOR2((1.0f / nNumWidth) * (nCntVtx % (nNumWidth + 1)), 1.0f -((1.0f / nNumHeight) * (nCntVtx / (nNumWidth + 1))));
 	}

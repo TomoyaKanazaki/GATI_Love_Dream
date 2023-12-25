@@ -137,7 +137,7 @@ HRESULT CGame::Init(void)
 	m_pPlayer->BindId(0);
 	//m_pCountDown = CCountDown::Create();
 
-	//m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(-8000.0f, -300.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10000.0f, 10.0f, 10, 10);
+	m_pMeshDome = CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6500.0f, 10.0f, 10, 10);
 
 	if (m_state == STATE_MULTI)
 	{// É}ÉãÉ`ÇÃèÍçá

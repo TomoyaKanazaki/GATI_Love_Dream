@@ -353,6 +353,10 @@ void CPlayer::Update(void)
 	// 起伏との当たり判定
 	D3DXVECTOR3 nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	float fHeight = CMeshField::GetHeight(m_Info.pos);
+	
+	if (m_Info.pos.y <= fHeight) {
+		m_Info.pos.y = fHeight;
+	}
 
 	// 影の設定
 	if (nullptr != m_pShadow) {
@@ -414,7 +418,7 @@ void CPlayer::Controller(void)
 
 	// 操作処理
 	{
-		if (pInputKey->GetPress(DIK_SPACE) == false && pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == false)
+		if (pInputKey->GetPress(DIK_SPACE) == false && pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId) == false)
 		{
 			Move();		// 移動
 		}
@@ -477,7 +481,7 @@ void CPlayer::Controller(void)
 
 	{
 		float fIner = INER;
-		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::BUTTON_A, m_nId) == true)
+		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true)
 		{
 			fIner = STOP_INER;
 		}
@@ -613,30 +617,7 @@ void CPlayer::Move(void)
 //===============================================
 void CPlayer::Rotation(void)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
-	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
-	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
-
-	// 入力装置確認
-	if (nullptr == pInputPad){
-		return;
-	}
-
-	if (!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS) && 
-		!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_MINUS) &&
-		!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS) &&
-		!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_MINUS))
-	{// コントローラー入力無し
-		KeyBoardRotation();
-		return;
-	}
-
-	D3DXVECTOR2 vec;
-	vec.y = pInputPad->GetStickAdd(0, CInputPad::BUTTON_LEFT_X, 0.1f);
-	vec.x = pInputPad->GetStickAdd(0, CInputPad::BUTTON_LEFT_Y, 0.1f);
-	D3DXVec2Normalize(&vec, &vec);
-
-	m_fRotDest = atan2f(vec.y, vec.x);
+	
 }
 
 //===============================================
@@ -886,23 +867,7 @@ void CPlayer::SetType(TYPE type)
 {
 	m_type = type;
 
-	if (m_type == TYPE_ACTIVE)
-	{
-		if (m_pMapIcon != nullptr)
-		{
-			m_pMapIcon->SetCol(D3DXCOLOR(1.0f, 0.8f, 0.0f, 1.0f));
-			m_pMapIcon->SetPosition(D3DXVECTOR3(m_pMapIcon->GetPosition().x, SCREEN_HEIGHT * 0.93f, 0.0f));
-		}
-
-		if (m_pGoal == nullptr && CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
-		{
-			m_pGoal = CObject2D::Create(6);
-			m_pGoal->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT * 0.4f, 0.0f));
-			m_pGoal->SetRotation(D3DXVECTOR3(0.0f, 0.0f, -D3DX_PI * 0.05f));
-			m_pGoal->SetLength(SCREEN_WIDTH * 0.75f, SCREEN_HEIGHT * 0.2f);
-			m_pGoal->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\start.png"));
-		}
-	}
+	
 }
 
 //===============================================
@@ -913,25 +878,7 @@ void CPlayer::SetGoal(bool bValue)
 	bool Old = m_bGoal;
 	m_bGoal = bValue;
 
-	if (Old == false && m_bGoal == true)
-	{
-		m_pGoal = CObject2D::Create(6);
-		m_pGoal->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT * 0.4f, 0.0f));
-		m_pGoal->SetRotation(D3DXVECTOR3(0.0f, 0.0f, -D3DX_PI * 0.05f));
-		m_pGoal->SetLength(SCREEN_WIDTH * 0.75f, SCREEN_HEIGHT * 0.25f);
-
-		if (m_pGoal != nullptr)
-		{
-			if (m_type == TYPE_NONE)
-			{
-				m_pGoal->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\goal_lose.png"));
-			}
-			else
-			{
-				m_pGoal->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\goal_win.png"));
-			}
-		}
-	}
+	
 }
 
 //===============================================

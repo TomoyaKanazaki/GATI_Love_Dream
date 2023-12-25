@@ -59,6 +59,7 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetVectorU(void) { return m_vecU; }
 	void SetRotation(D3DXVECTOR3 rot);
 	void SetLength(float fLength) { m_fLength = fLength; }
+	void Rotate(void);
 
 	// メンバ関数(設定)
 	D3DXMATRIX SetMtxView(const D3DXMATRIX& mtxView) { m_mtxView = mtxView; }

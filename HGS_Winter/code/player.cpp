@@ -420,6 +420,7 @@ void CPlayer::Controller(void)
 		}
 
 		Rotation();	// ‰ñ“]
+		RotateCamera();	// ƒJƒƒ‰‰ñ“]
 	}
 
 	pos = GetPosition();	// À•W‚ðŽæ“¾
@@ -931,4 +932,12 @@ void CPlayer::SetGoal(bool bValue)
 			}
 		}
 	}
+}
+
+//===============================================
+// ƒJƒƒ‰‘€ì
+//===============================================
+void CPlayer::RotateCamera(void)
+{
+	CManager::GetInstance()->GetCamera()->Rotate();
 }

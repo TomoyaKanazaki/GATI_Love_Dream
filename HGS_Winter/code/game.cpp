@@ -306,6 +306,12 @@ void CGame::Update(void)
 			CManager::GetInstance()->GetDeltaTime(),
 			m_Time
 		);
+
+		// ‘JˆÚ
+		if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
+		{
+			m_bEnd = true;
+		}
 #endif
 
 		// Œo‰ßŽžŠÔ‚ð‰ÁŽZ

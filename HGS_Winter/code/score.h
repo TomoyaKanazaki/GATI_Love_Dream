@@ -8,6 +8,11 @@
 #define _SCORE_H_
 
 //==========================================
+//  前方宣言
+//==========================================
+class CNumber;
+
+//==========================================
 //  クラス定義
 //==========================================
 class CScore
@@ -22,7 +27,7 @@ public:
 	void Uninit(); // 終了処理
 	void Update(); // 更新処理
 	void Draw(); // 描画処理
-	void AddScorePoint(const int AddPoint = 3); // スコアの加算
+	void AddScorePoint(const int AddPoint = 5); // スコアの加算
 	int GetScorePoint() const { return m_ScorePoint; } // スコアの取得
 
 	// 静的メンバ関数
@@ -30,11 +35,16 @@ public:
 
 private:
 
+	//定数定義
+#define NUM_NUM (8) // すうじのかず
+
 	// メンバ関数
 	void LimitScore(); // スコアの制限
 
 	// メンバ変数
 	int m_ScorePoint; // 現在のスコア
+	CNumber* m_apNumber[NUM_NUM]; // 数字のポインタ
+	bool m_Create;
 
 	// 静的メンバ変数
 	static CScore* m_pScore; // 自分自身のポインタ

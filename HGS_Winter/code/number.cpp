@@ -6,6 +6,8 @@
 //===============================================
 #include "number.h"
 #include "object2D.h"
+#include "manager.h"
+#include "debugproc.h"
 
 // マクロ定義
 #define MAX_WIDTHPATTERN	(10)	// パターン数
@@ -96,6 +98,13 @@ void CNumber::Update(void)
 	if (m_pObject2D != NULL)
 	{// 使用されている場合
 		m_pObject2D->Update();
+
+#ifdef _DEBUG
+		CManager::GetInstance()->GetDebugProc()->Print
+		(
+			"%d", m_nIdx
+		);
+#endif
 	}
 }
 

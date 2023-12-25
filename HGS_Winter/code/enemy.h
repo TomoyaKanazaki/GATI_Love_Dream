@@ -23,7 +23,6 @@ public:
 	void Uninit(void) override; // 終了処理
 	void Update(void) override; // 更新処理
 	void Draw(void) override; // 描画処理
-	void Hit(); // 当たったよ
 
 	// 静的メンバ関数
 	static CEnemy* Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot, const char* pFileName, const int nPriority = 4);

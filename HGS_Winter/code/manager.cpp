@@ -23,6 +23,7 @@
 #include "slow.h"
 #include "task_manager.h"
 #include "score.h"
+#include "fog.h"
 
 //===============================================
 // Ã“Iƒƒ“ƒo•Ï”

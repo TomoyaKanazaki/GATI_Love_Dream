@@ -35,6 +35,7 @@
 #include <thread>
 #include "protocol_online.h"
 #include "object2D.h"
+#include "fog.h"
 
 // グローバル
 
@@ -57,6 +58,16 @@
 #define DEF_PORT	(22333)	// ポート番号
 #define MAX_STRING	(2048)
 #define ADDRESSFILE	"data\\TXT\\address.txt"
+
+//==========================================
+//  定数定義
+//==========================================
+namespace
+{
+	const float FOG_START = 1000.0f; // フォグの初期位置(距離)
+	const float FOG_END = 100.0f; // フォグの最終位置(距離)
+	const D3DXCOLOR FOG_COLOR = D3DXCOLOR(0.9f, 0.9f, 0.9f, 0.5f); // フォグの色
+}
 
 //===============================================
 // 静的メンバ変数
@@ -185,6 +196,12 @@ HRESULT CGame::Init(void)
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
+	// フォグを設定
+	Fog::Set(true); // フォグをオン!!
+	Fog::SetCol(FOG_COLOR); // フォグの色を設定
+	Fog::SetEnd(FOG_START); // フォグの最大距離を設定
+	Fog::SetStart(FOG_START); // フォグの最大距離を設定
+
 	return S_OK;
 }
 
@@ -244,6 +261,8 @@ void CGame::Uninit(void)
 	//Winsock終了処理
 	WSACleanup();	// WSACleanup関数 : winsockの終了処理
 
+	// フォグを設定
+	Fog::Set(false); // フォグをオフ!!
 }
 
 //===============================================

@@ -174,17 +174,17 @@ void CCamera::Rotate(void)
 	float fMultiSlow = 1.0f;
 
 	//x軸の移動
-	if (pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, 0) == true)
-	{//Qキー入力
-		m_rot.y += -D3DX_PI * ROTATE_SPEED * fMultiSlow;
+	if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_X, 0.05f, CInputPad::STICK_MINUS) == true)
+	{// 右スティック左側入力
+		m_rot.y += -D3DX_PI * ROTATE_SPEED * fMultiSlow * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_X, 0.3f);
 		if (m_rot.y < -D3DX_PI)
 		{//角度がΠを超えた場合
 			m_rot.y += D3DX_PI * 2;
 		}
 	}
-	else if (pInputPad->GetPress(CInputPad::BUTTON_RIGHTBUTTON, 0) == true)
-	{//Eキー入力
-		m_rot.y += D3DX_PI * ROTATE_SPEED * fMultiSlow;
+	else if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_X, 0.05f, CInputPad::STICK_PLUS) == true)
+	{//右スティック右側入力
+		m_rot.y += -D3DX_PI * ROTATE_SPEED * fMultiSlow * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_X, 0.3f);
 
 		if (m_rot.y > D3DX_PI)
 		{//角度がΠを超えた場合

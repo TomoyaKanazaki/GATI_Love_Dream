@@ -877,8 +877,6 @@ void CPlayer::SetGoal(bool bValue)
 {
 	bool Old = m_bGoal;
 	m_bGoal = bValue;
-
-	
 }
 
 //===============================================

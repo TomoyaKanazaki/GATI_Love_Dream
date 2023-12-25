@@ -212,6 +212,19 @@ HRESULT CGame::Init(void)
 	m_pTimer->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	m_nCountDown = 3;
 
+	{
+		float fLength = 4500.0f;
+		float fAngle = 0.0f;
+		float fAdd = 0.04f;
+		int nNum = static_cast<int>(D3DX_PI / fAdd) * 2;
+
+		for (int nCnt = 0; nCnt < nNum; nCnt++) {
+			CObjectX::Create({0.0f + sinf(fAngle) * fLength, 0.0f, 0.0f + cosf(fAngle) * fLength }, {0.0f, 0.0f, 0.0f}, "data\\MODEL\\tree.x");
+
+			fAngle += fAdd;
+		}
+	}
+
 	// スポットライトをオン
 	//CManager::GetInstance()->GetLight()->EnablePointLight(true);
 

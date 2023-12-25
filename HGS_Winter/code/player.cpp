@@ -473,8 +473,11 @@ void CPlayer::Controller(void)
 
 	{
 		float fIner = INER;
-		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true)
+		if (pInputKey->GetPress(DIK_SPACE) == true || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_RIGHTBUTTON, m_nId) == true)
 		{
+			if (pInputKey->GetTrigger(DIK_SPACE) == true || pInputPad->GetTrigger(CInputPad::CInputPad::BUTTON_LEFTBUTTON, m_nId) == true || pInputPad->GetTrigger(CInputPad::CInputPad::BUTTON_RIGHTBUTTON, m_nId) == true)
+			{
+			}
 			fIner = STOP_INER;
 		}
 
@@ -520,6 +523,18 @@ void CPlayer::Controller(void)
 
 	//デバッグ表示
 	CManager::GetInstance()->GetDebugProc()->Print("\n回転[W,A,S,D] : 加速[SPACE] : ステップ[K, (Rボタン)]\n");
+
+	if (m_pObject == nullptr) {
+		return;
+	}
+
+	if (m_pObject->GetMotion() == nullptr) {
+		return;
+	}
+
+	if (m_pObject->GetMotion()->GetNowMotion() == 1 && m_pObject->GetMotion()->GetNowFrame() == 0) {
+
+	}
 }
 
 //===============================================
@@ -534,7 +549,7 @@ void CPlayer::Move(void)
 	float fSpeed = MOVE;	// 移動量
 	m_bMove = false;
 
-	if (pInputKey->GetPress(DIK_SPACE) || pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId))
+	if (pInputKey->GetPress(DIK_SPACE) || pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId) || pInputPad->GetPress(CInputPad::CInputPad::BUTTON_RIGHTBUTTON, m_nId))
 	{
 		fSpeed = 0.0f;
 	}
